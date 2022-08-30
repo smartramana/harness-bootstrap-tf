@@ -28,32 +28,27 @@ locals {
   harness_platform_secrets = {
     harness_platform_api_key = {
       secret      = var.harness_platform_api_key
-      org_id      = module.bootstrap_harness.project["Harness Cinemas Seed"].org_id
-      project_id  = module.bootstrap_harness.project["Harness Cinemas Seed"].identifier
+      org_id      = module.bootstrap_harness.organization["cristiab-lab-org"].org_id
       description = "harness_platform_api_key"
     }
     harness_platform_account_id = {
       secret      = var.harness_platform_account_id
-      org_id      = module.bootstrap_harness.project["Harness Cinemas Seed"].org_id
-      project_id  = module.bootstrap_harness.project["Harness Cinemas Seed"].identifier
+      org_id      = module.bootstrap_harness.organization["cristiab-lab-org"].org_id
       description = "harness_platform_account_id"
     }
     harness_connectors_crizstian_github_token = {
       secret      = var.harness_connectors_crizstian_github_token
-      org_id      = module.bootstrap_harness.project["Harness Cinemas Seed"].org_id
-      project_id  = module.bootstrap_harness.project["Harness Cinemas Seed"].identifier
+      org_id      = module.bootstrap_harness.organization["cristiab-lab-org"].org_id
       description = "harness_connectors_crizstian_github_token"
     }
     harness_connectors_crizstian_docker_token = {
       secret      = var.harness_connectors_crizstian_docker_token
-      org_id      = module.bootstrap_harness.project["Harness Cinemas Seed"].org_id
-      project_id  = module.bootstrap_harness.project["Harness Cinemas Seed"].identifier
+      org_id      = module.bootstrap_harness.organization["cristiab-lab-org"].org_id
       description = "harness_connectors_crizstian_docker_token"
     }
     harness_connectors_crizstian_artifactory_token = {
       secret      = var.harness_connectors_crizstian_artifactory_token
-      org_id      = module.bootstrap_harness.project["Harness Cinemas Seed"].org_id
-      project_id  = module.bootstrap_harness.project["Harness Cinemas Seed"].identifier
+      org_id      = module.bootstrap_harness.organization["cristiab-lab-org"].org_id
       description = "harness_connectors_crizstian_artifactory_token"
     }
   }

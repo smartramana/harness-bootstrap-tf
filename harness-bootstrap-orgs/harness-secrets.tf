@@ -7,7 +7,6 @@ resource "harness_platform_secret_text" "harness_secrets" {
   value_type                = "Inline"
   value                     = each.value.secret
   org_id                    = each.value.org_id
-  project_id                = each.value.project_id
 
   lifecycle {
     ignore_changes = [

@@ -1,3 +1,8 @@
+provider "harness" {
+  endpoint         = "https://app.harness.io/gateway"
+  account_id       = var.harness_platform_account_id
+  platform_api_key = var.harness_platform_api_key
+}
 
 provider "harness" {
   alias            = "provisioner"

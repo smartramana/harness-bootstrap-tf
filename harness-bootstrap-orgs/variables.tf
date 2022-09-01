@@ -13,6 +13,9 @@ variable "harness_connectors_crizstian_docker_token" {
 variable "harness_connectors_crizstian_artifactory_token" {
   sensitive = true
 }
+variable "harness_template_endpoint" {
+  default = "https://app.harness.io/gateway/template/api/templates"
+}
 
 locals {
   harness_platform_projects = tomap({
@@ -27,4 +30,6 @@ locals {
   harness_platform_secrets = merge(
     local.cristian_secrets_org
   )
+
+  harness_template_endpoint_account_args = "?accountIdentifier=${var.harness_platform_account_id}&orgIdentifier=${module.bootstrap_harness.organization[var.cristian_lab_org_projects.organization_name].org_id}&storeType=INLINE&comments=terraform-generated"
 }

@@ -48,10 +48,10 @@ resource "local_file" "template" {
     org_identifier     = module.bootstrap_harness.organization[var.cristian_lab_org_projects.organization_name].org_id
     git_connector_ref  = "org.crizstian_lab_github_connector" # TODO: get name dynamically
     secret_manager_ref = "org.harnessSecretManager"
-    approver_ref       = "account.SE_Admin"
-    delegate_ref       = "cristian-gke-tf"
+    approver_ref       = "account.SE_Admin" # TODO: get name dynamically
+    delegate_ref       = "cristian-gke-tf"  # TODO: get name dynamically
     store_type_ref     = "Github"
-    provisioner_ref    = "tf"
+    provisioner_ref    = "<+pipeline.stages.[\"Provisioning\"].variables.[\"provisioner_ref\"]>"
 
     tf_backend = {
       username = "<+pipeline.stages.[\"Provisioning\"].variables.[\"tf_backend_username\"]>"

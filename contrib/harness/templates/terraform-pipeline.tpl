@@ -32,23 +32,27 @@ template:
                                   spec:
                                     gitFetchType: Branch
                                     connectorRef: ${git_connector_ref}
-                                    repoName: test
-                                    branch: test
-                                    folderPath: test
+                                    repoName: <+pipeline.stages.["Provisioning"].variables.["git_repoName"]>
+                                    branch: <+pipeline.stages.["Provisioning"].variables.["git_branch"]>
+                                    folderPath: <+pipeline.stages.["Provisioning"].variables.["git_folderPath"]>
                               secretManagerRef: ${secret_manager_ref}
                               backendConfig:
                                 type: Inline
                                 spec:
                                   content: |-
-                                    test = test
+                                  %{ for key, value in tf_backend }
+                                  ${key} = ${value}
+                                  %{ endfor }
                               varFiles:
                                 - varFile:
-                                    identifier: terraform.tfvars
+                                    identifier: vars
                                     spec:
                                       content: |-
-                                        test = test
+                                      %{ for key, value in tf_variables }
+                                      ${key} = ${value}
+                                      %{ endfor }
                                     type: Inline
-                            provisionerIdentifier: tf
+                            provisionerIdentifier: <+pipeline.stages.["Provisioning"].variables.["provisioner_identifier"]>
                           timeout: 10m
                       - step:
                           type: HarnessApproval
@@ -99,5 +103,38 @@ template:
           tags: {}
           variables:
             - name: action
+              type: String
+              value: <+input>
+            - name: repoName
+              type: String
+              value: <+input>
+            - name: branch
+              type: String
+              value: <+input>
+            - name: folderPath
+              type: String
+              value: <+input>
+            - name: provisioner_identifier
+              type: String
+              value: <+input>
+            - name: tf_backend_username
+              type: String
+              value: <+input>
+            - name: tf_backend_password
+              type: String
+              value: <+input>
+            - name: tf_backend_url
+              type: String
+              value: <+input>
+            - name: tf_backend_repo
+              type: String
+              value: <+input>
+            - name: tf_backend_subpath
+              type: String
+              value: <+input>
+            - name: harness_platform_api_key
+              type: String
+              value: <+input>
+            - name: harness_platform_account_id
               type: String
               value: <+input>

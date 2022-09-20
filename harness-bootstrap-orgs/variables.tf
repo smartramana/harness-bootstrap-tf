@@ -1,8 +1,8 @@
 variable "harness_platform_api_key" {
-  sensitive = true
+  sensitive = false
 }
 variable "harness_platform_account_id" {
-  sensitive = true
+  sensitive = false
 }
 variable "harness_connector_crizstian_github_token" {
   sensitive = true
@@ -12,9 +12,6 @@ variable "harness_connector_crizstian_docker_token" {
 }
 variable "harness_connector_crizstian_artifactory_token" {
   sensitive = true
-}
-variable "harness_template_endpoint" {
-  default = "https://app.harness.io/gateway/template/api/templates"
 }
 
 locals {
@@ -31,5 +28,5 @@ locals {
     local.cristian_secrets_org
   )
 
-  harness_template_endpoint_account_args = "?accountIdentifier=${var.harness_platform_account_id}&orgIdentifier=${module.bootstrap_harness.organization[var.cristian_lab_org_projects.organization_name].org_id}&storeType=INLINE&comments=terraform-generated"
+  harness_template_endpoint_account_args = "?accountIdentifier=${var.harness_platform_account_id}&orgIdentifier=${module.bootstrap_harness_account.organization[var.cristian_lab_org_projects.organization_name].org_id}&storeType=INLINE&comments=terraform-generated"
 }

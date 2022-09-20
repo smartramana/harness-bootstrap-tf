@@ -1,7 +1,7 @@
 template:
   name: Terraform
   identifier: Terraform
-  versionLabel: 0.0.1
+  versionLabel: ${version}
   type: Pipeline
   orgIdentifier: ${org_identifier}
   tags: {}
@@ -40,17 +40,17 @@ template:
                                 type: Inline
                                 spec:
                                   content: |-
-                                  %{ for key, value in tf_backend }
-                                  ${key} = ${value}
-                                  %{ endfor }
+                                    %{ for key, value in tf_backend }
+                                    ${key} = ${value}
+                                    %{ endfor }
                               varFiles:
                                 - varFile:
                                     identifier: vars
                                     spec:
                                       content: |-
-                                      %{ for key, value in tf_variables }
-                                      ${key} = ${value}
-                                      %{ endfor }
+                                        %{ for key, value in tf_variables }
+                                        ${key} = ${value}
+                                        %{ endfor }
                                     type: Inline
                             provisionerIdentifier: <+pipeline.stages.["Provisioning"].variables.["provisioner_identifier"]>
                           timeout: 10m

@@ -7,7 +7,7 @@ locals {
         connection_type = "Account"
         url             = "https://github.com/Crizstian"
         validation_repo = "harness-as-code"
-        org_id          = module.bootstrap_harness.organization[var.cristian_lab_org_projects.organization_name].org_id
+        org_id          = module.bootstrap_harness_account.organization[var.cristian_lab_org_projects.organization_name].org_id
         credentials = {
           http = {
             username     = "crizstian"

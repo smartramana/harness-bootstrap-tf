@@ -8,7 +8,7 @@ locals {
         tags                   = ["gcp-environment", "cr-tf"]
         clusterPermissionType  = "CLUSTER_ADMIN"
         customClusterNamespace = "harness-delegate-ng"
-        org_id                 = module.bootstrap_harness.organization[var.cristian_lab_org_projects.organization_name].org_id
+        org_id                 = module.bootstrap_harness_account.organization[var.cristian_lab_org_projects.organization_name].org_id
       }
     }
   }

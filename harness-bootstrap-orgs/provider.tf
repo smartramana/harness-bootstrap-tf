@@ -18,5 +18,5 @@ terraform {
     }
   }
 
-  backend "artifactory" {}
+  # backend "artifactory" {}
 }

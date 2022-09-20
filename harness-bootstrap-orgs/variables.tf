@@ -4,13 +4,13 @@ variable "harness_platform_api_key" {
 variable "harness_platform_account_id" {
   sensitive = true
 }
-variable "harness_connectors_crizstian_github_token" {
+variable "harness_connector_crizstian_github_token" {
   sensitive = true
 }
-variable "harness_connectors_crizstian_docker_token" {
+variable "harness_connector_crizstian_docker_token" {
   sensitive = true
 }
-variable "harness_connectors_crizstian_artifactory_token" {
+variable "harness_connector_crizstian_artifactory_token" {
   sensitive = true
 }
 variable "harness_template_endpoint" {

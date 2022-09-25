@@ -50,22 +50,22 @@ module "bootstrap_harness_templates" {
   harness_template_endpoint_account_args = local.harness_template_endpoint_account_args
 }
 
-# module "bootstrap_harness_delegates" {
-#   depends_on = [
-#     module.bootstrap_harness_account,
-#   ]
-#   source                     = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-delegate?ref=main"
-#   harness_platform_delegates = local.harness_platform_delegates
-#   harness_platform_api_key   = var.harness_platform_api_key
-#   harness_account_id         = var.harness_platform_account_id
-# }
+module "bootstrap_harness_delegates" {
+  depends_on = [
+    module.bootstrap_harness_account,
+  ]
+  source                     = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-delegate?ref=main"
+  harness_platform_delegates = local.harness_platform_delegates
+  harness_platform_api_key   = var.harness_platform_api_key
+  harness_account_id         = var.harness_platform_account_id
+}
 
 output "details" {
   value = {
     organization = module.bootstrap_harness_account.organization
-    # delegates    = module.bootstrap_harness_delegates.delegates
-    project = module.bootstrap_harness_account.project
+    delegates    = module.bootstrap_harness_delegates.delegates
+    project      = module.bootstrap_harness_account.project
+    connectors   = module.bootstrap_harness_connector.connectors
     # manifests  = module.bootstrap_harness_delegates.manifests
-    connectors = module.bootstrap_harness_connector.connectors
   }
 }

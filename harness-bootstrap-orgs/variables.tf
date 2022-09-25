@@ -1,8 +1,8 @@
 variable "harness_platform_api_key" {
-  sensitive = false
+  sensitive = true
 }
 variable "harness_platform_account_id" {
-  sensitive = false
+  sensitive = true
 }
 variable "harness_connector_crizstian_github_token" {
   sensitive = true

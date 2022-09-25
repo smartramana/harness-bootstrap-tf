@@ -53,6 +53,8 @@ template:
                                         %{ endfor }
                                     type: Inline
                             provisionerIdentifier: <+pipeline.stages.["Provisioning"].variables.["provisioner_identifier"]>
+                            delegateSelectors:
+                              - ${delegate_ref}
                           timeout: 10m
                       - step:
                           type: HarnessApproval
@@ -76,7 +78,9 @@ template:
                               spec:
                                 configuration:
                                   type: InheritFromPlan
-                                provisionerIdentifier: tf
+                                provisionerIdentifier: <+pipeline.stages.["Provisioning"].variables.["provisioner_identifier"]>
+                                delegateSelectors:
+                                  - ${delegate_ref}
                               timeout: 10m
                               when:
                                 stageStatus: Success
@@ -87,7 +91,9 @@ template:
                               name: TF Destroy
                               identifier: TF_Destroy
                               spec:
-                                provisionerIdentifier: tf
+                                provisionerIdentifier: <+pipeline.stages.["Provisioning"].variables.["provisioner_identifier"]>
+                                delegateSelectors:
+                                  - ${delegate_ref}
                                 configuration:
                                   type: InheritFromApply
                               timeout: 10m

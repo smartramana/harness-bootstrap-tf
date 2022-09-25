@@ -8,7 +8,7 @@ locals {
         git_connector_ref  = "org.crizstian_lab_github_connector" # TODO: get name dynamically
         secret_manager_ref = "org.harnessSecretManager"
         approver_ref       = "account.SE_Admin" # TODO: get name dynamically
-        delegate_ref       = "cristian-gke-tf"  # TODO: get name dynamically
+        delegate_ref       = "cr-tf"            # TODO: get name dynamically
         store_type_ref     = "Github"
         provisioner_ref    = "<+pipeline.stages.[\"Provisioning\"].variables.[\"provisioner_ref\"]>"
         version            = "0.0.1"

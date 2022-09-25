@@ -10,19 +10,25 @@ pipeline:
             identifier: Provisioning
             type: Custom
             variables:
-              - name: action
+              - name: git_repoName
                 type: String
                 value: <+input>
-              - name: repoName
+              - name: git_branch
                 type: String
                 value: <+input>
-              - name: branch
+              - name: git_folderPath
                 type: String
                 value: <+input>
-              - name: folderPath
+              - name: harness_provisioner_identifier
                 type: String
                 value: <+input>
-              - name: provisioner_identifier
+              - name: harness_platform_api_key
+                type: String
+                value: <+input>
+              - name: harness_platform_account_id
+                type: String
+                value: <+input>
+              - name: tf_action
                 type: String
                 value: <+input>
               - name: tf_backend_username
@@ -38,12 +44,6 @@ pipeline:
                 type: String
                 value: <+input>
               - name: tf_backend_subpath
-                type: String
-                value: <+input>
-              - name: harness_platform_api_key
-                type: String
-                value: <+input>
-              - name: harness_platform_account_id
                 type: String
                 value: <+input>
   tags: {}

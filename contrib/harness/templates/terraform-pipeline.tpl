@@ -32,9 +32,9 @@ template:
                                   spec:
                                     gitFetchType: Branch
                                     connectorRef: ${git_connector_ref}
-                                    repoName: <+pipeline.stages.["Provisioning"].variables.["git_repoName"]>
-                                    branch: <+pipeline.stages.["Provisioning"].variables.["git_branch"]>
-                                    folderPath: <+pipeline.stages.["Provisioning"].variables.["git_folderPath"]>
+                                    branch: <+stage.variables.git_branch>
+                                    folderPath: <+stage.variables.git_folderPath>
+                                    repoName: <+stage.variables.git_repoName>
                               secretManagerRef: ${secret_manager_ref}
                               backendConfig:
                                 type: Inline
@@ -52,7 +52,7 @@ template:
                                         ${key} = ${value}
                                         %{ endfor }
                                     type: Inline
-                            provisionerIdentifier: <+pipeline.stages.["Provisioning"].variables.["provisioner_identifier"]>
+                            provisionerIdentifier: <+stage.variables.provisioner_identifier>
                             delegateSelectors:
                               - ${delegate_ref}
                           timeout: 10m
@@ -78,7 +78,7 @@ template:
                               spec:
                                 configuration:
                                   type: InheritFromPlan
-                                provisionerIdentifier: <+pipeline.stages.["Provisioning"].variables.["provisioner_identifier"]>
+                                provisionerIdentifier: <+stage.variables.provisioner_identifier>
                                 delegateSelectors:
                                   - ${delegate_ref}
                               timeout: 10m
@@ -91,7 +91,7 @@ template:
                               name: TF Destroy
                               identifier: TF_Destroy
                               spec:
-                                provisionerIdentifier: <+pipeline.stages.["Provisioning"].variables.["provisioner_identifier"]>
+                                provisionerIdentifier: <+stage.variables.provisioner_identifier>
                                 delegateSelectors:
                                   - ${delegate_ref}
                                 configuration:
@@ -111,13 +111,13 @@ template:
             - name: action
               type: String
               value: <+input>
-            - name: repoName
+            - name: git_repoName
               type: String
               value: <+input>
-            - name: branch
+            - name: git_branch
               type: String
               value: <+input>
-            - name: folderPath
+            - name: git_folderPath
               type: String
               value: <+input>
             - name: provisioner_identifier

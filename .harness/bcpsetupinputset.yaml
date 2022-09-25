@@ -22,7 +22,13 @@ inputSet:
                 - name: "git_folderPath"
                   type: "String"
                   value: "harness-bcp-bootstrap"
-                - name: "provisioner_identifier"
+                - name: "harness_platform_api_key"
+                  type: "String"
+                  value: '<+secrets.getValue("org.platform_api_key")>'
+                - name: "harness_platform_account_id"
+                  type: "String"
+                  value: '<+secrets.getValue("org.platform_account_id")>'
+                - name: "harness_provisioner_identifier"
                   type: "String"
                   value: "bcpbootstraptf"
                 - name: "tf_backend_username"
@@ -40,9 +46,3 @@ inputSet:
                 - name: "tf_backend_subpath"
                   type: "String"
                   value: "harness-bcp-bootstrap-tf"
-                - name: "harness_platform_api_key"
-                  type: "String"
-                  value: '<+secrets.getValue("org.platform_api_key")>'
-                - name: "harness_platform_account_id"
-                  type: "String"
-                  value: '<+secrets.getValue("org.platform_account_id")>'

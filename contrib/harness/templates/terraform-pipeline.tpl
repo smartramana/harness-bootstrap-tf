@@ -52,7 +52,7 @@ template:
                                         ${key} = ${value}
                                         %{ endfor }
                                     type: Inline
-                            provisionerIdentifier: <+stage.variables.provisioner_identifier>
+                            provisionerIdentifier: <+stage.variables.harness_provisioner_identifier>
                             delegateSelectors:
                               - ${delegate_ref}
                           timeout: 10m
@@ -78,20 +78,20 @@ template:
                               spec:
                                 configuration:
                                   type: InheritFromPlan
-                                provisionerIdentifier: <+stage.variables.provisioner_identifier>
+                                provisionerIdentifier: <+stage.variables.harness_provisioner_identifier>
                                 delegateSelectors:
                                   - ${delegate_ref}
                               timeout: 10m
                               when:
                                 stageStatus: Success
-                                condition: <+stage.variable.action> == "apply"
+                                condition: <+stage.variable.tf_action> == "apply"
                               failureStrategies: []
                           - step:
                               type: TerraformDestroy
                               name: TF Destroy
                               identifier: TF_Destroy
                               spec:
-                                provisionerIdentifier: <+stage.variables.provisioner_identifier>
+                                provisionerIdentifier: <+stage.variables.harness_provisioner_identifier>
                                 delegateSelectors:
                                   - ${delegate_ref}
                                 configuration:
@@ -99,7 +99,7 @@ template:
                               timeout: 10m
                               when:
                                 stageStatus: Success
-                                condition: <+stage.variable.action> == "destroy"
+                                condition: <+stage.variable.tf_action> == "destroy"
                               failureStrategies: []
                     failureStrategies: []
                     delegateSelectors:
@@ -108,9 +108,6 @@ template:
             serviceDependencies: []
           tags: {}
           variables:
-            - name: action
-              type: String
-              value: <+input>
             - name: git_repoName
               type: String
               value: <+input>
@@ -120,7 +117,16 @@ template:
             - name: git_folderPath
               type: String
               value: <+input>
-            - name: provisioner_identifier
+            - name: harness_provisioner_identifier
+              type: String
+              value: <+input>
+            - name: harness_platform_api_key
+              type: String
+              value: <+input>
+            - name: harness_platform_account_id
+              type: String
+              value: <+input>
+            - name: tf_action
               type: String
               value: <+input>
             - name: tf_backend_username
@@ -136,11 +142,5 @@ template:
               type: String
               value: <+input>
             - name: tf_backend_subpath
-              type: String
-              value: <+input>
-            - name: harness_platform_api_key
-              type: String
-              value: <+input>
-            - name: harness_platform_account_id
               type: String
               value: <+input>

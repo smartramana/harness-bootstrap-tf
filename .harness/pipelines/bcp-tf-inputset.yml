@@ -32,10 +32,10 @@ inputSet:
                   value: harness
                 - name: tf_backend_password
                   type: String
-                  value: "" #<+secrets.getValue(\"connector_crizstian_artifactory_token\")>
+                  value: <+secrets.getValue(\"connector_crizstian_artifactory_token\")>
                 - name: tf_backend_url
                   type: String
-                  value: "" #https://cramirezdevops.jfrog.io/artifactory
+                  value: https://cramirezdevops.jfrog.io/artifactory
                 - name: tf_backend_repo
                   type: String
                   value: terraform
@@ -44,7 +44,7 @@ inputSet:
                   value: harness-bcp-bootstrap-tf
                 - name: harness_platform_api_key
                   type: String
-                  value: "" #<+secrets.getValue(\"harness_platform_api_key\")>
+                  value: <+secrets.getValue(\"harness_platform_api_key\")>
                 - name: harness_platform_account_id
                   type: String
-                  value: "" #<+secrets.getValue(\"harness_platform_account_id\")>
+                  value: <+secrets.getValue(\"harness_platform_account_id\")>

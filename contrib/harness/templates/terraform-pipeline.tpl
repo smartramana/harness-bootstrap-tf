@@ -41,7 +41,7 @@ template:
                                 spec:
                                   content: |-
                                     %{ for key, value in tf_backend }
-                                    ${key} = ${value}
+                                    ${key} = "${value}"
                                     %{ endfor }
                               varFiles:
                                 - varFile:
@@ -49,7 +49,7 @@ template:
                                     spec:
                                       content: |-
                                         %{ for key, value in tf_variables }
-                                        ${key} = ${value}
+                                        ${key} = "${value}"
                                         %{ endfor }
                                     type: Inline
                             provisionerIdentifier: <+stage.variables.harness_provisioner_identifier>

@@ -2,7 +2,7 @@
     "dockerComposeFile": [
         "docker-compose.devcontainer.yml"
     ],
-    "service": "harness_bootstrap",
+    "service": "harness_account",
     "shutdownAction": "stopCompose",
     "workspaceFolder": "/workspace",
     "settings": {

@@ -13,6 +13,5 @@ locals {
   # harness_platform_connectors = merge(
   #   local.cristiab_lab_org_connectors
   # )
-
   # harness_template_endpoint_account_args = "?accountIdentifier=${var.harness_platform_account_id}&orgIdentifier=${module.bootstrap_harness_account.organization[var.cristian_lab_org_projects.organization_name].org_id}&storeType=INLINE&comments=terraform-generated"
 }

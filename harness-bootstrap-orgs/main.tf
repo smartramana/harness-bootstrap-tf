@@ -26,25 +26,6 @@ module "bootstrap_harness_delegates" {
   harness_account_id         = var.harness_platform_account_id
 }
 
-resource "harness_platform_secret_text" "harness_secrets" {
-  depends_on = [
-    module.bootstrap_harness_account,
-  ]
-  for_each                  = local.harness_platform_secrets
-  identifier                = "${lower(replace(each.key, "/[\\s-.]/", "_"))}_1"
-  name                      = each.key
-  description               = "${each.key} - ${each.value.description}"
-  secret_manager_identifier = "harnessSecretManager"
-  value_type                = "Inline"
-  value                     = each.value.secret
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
-}
-
 output "account" {
   value = {
     organizations    = module.bootstrap_harness_account.organization

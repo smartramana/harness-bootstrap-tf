@@ -7,6 +7,15 @@ module "bootstrap_harness_account" {
   }
 }
 
+module "bootstrap_harness_project_seed" {
+  source                    = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-project?ref=main"
+  harness_platform_projects = local.harness_platform_projects
+
+  providers = {
+    harness = harness.provisioner
+  }
+}
+
 module "bootstrap_harness_delegates" {
   depends_on = [
     module.bootstrap_harness_account,
@@ -36,9 +45,10 @@ resource "harness_platform_secret_text" "harness_secrets" {
   }
 }
 
-output "details" {
+output "account" {
   value = {
-    organization = module.bootstrap_harness_account.organization
-    delegates    = module.bootstrap_harness_delegates.delegates
+    organizations    = module.bootstrap_harness_account.organization
+    seed_projects    = module.bootstrap_harness_project_seed.project
+    global_delegates = module.bootstrap_harness_delegates.delegates
   }
 }

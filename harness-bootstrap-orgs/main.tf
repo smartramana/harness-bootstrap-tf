@@ -1,15 +1,7 @@
+# Create Organizations
 module "bootstrap_harness_account" {
   source                         = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-project?ref=main"
   harness_platform_organizations = local.harness_platform_organizations
-
-  providers = {
-    harness = harness.provisioner
-  }
-}
-
-module "bootstrap_harness_project_seed" {
-  source                    = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-project?ref=main"
-  harness_platform_projects = local.harness_platform_projects
 
   providers = {
     harness = harness.provisioner
@@ -29,7 +21,6 @@ module "bootstrap_harness_delegates" {
 output "account" {
   value = {
     organizations    = module.bootstrap_harness_account.organization
-    seed_projects    = module.bootstrap_harness_project_seed.project
     global_delegates = module.bootstrap_harness_delegates.delegates
   }
 }

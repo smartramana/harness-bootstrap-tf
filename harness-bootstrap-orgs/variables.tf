@@ -1,12 +1,11 @@
-variable "harness_platform_api_key" {
+variable "harness_platform_account_id" {
   sensitive = true
 }
-variable "harness_platform_account_id" {
+variable "harness_platform_api_key" {
   sensitive = true
 }
 
 locals {
-  harness_platform_organizations = var.cristian_lab_orgs
-  harness_platform_projects      = local.cristian_lab_org_projects
-  harness_platform_delegates     = local.cristiab_account_delegates
+  harness_platform_organizations = merge(local.cristian_lab_organizations)
+  harness_platform_delegates     = local.cristian_account_delegates
 }

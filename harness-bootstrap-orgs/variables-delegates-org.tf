@@ -1,6 +1,6 @@
 locals {
   cristian-delegate-tf = "cristian-delegate-tf"
-  cristiab_account_delegates = {
+  cristian_account_delegates = {
     k8s = {
       "${local.cristian-delegate-tf}" = {
         enable                 = true

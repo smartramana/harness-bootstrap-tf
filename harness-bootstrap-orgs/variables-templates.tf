@@ -25,7 +25,7 @@
 #           harness_platform_account_id = "<+stage.variables.harness_platform_account_id>"
 #           # connector_crizstian_github_token      = "<+secrets.getValue(\"connector_crizstian_github_token\")>"
 #           # connector_crizstian_docker_token      = "<+secrets.getValue(\"connector_crizstian_docker_token\")>"
-#           # connector_crizstian_artifactory_token = "<+secrets.getValue(\"connector_crizstian_artifactory_token\")>"
+#           # connector_crizstian_artifactory_token = "<+secrets.getValue(\"cristian_harness_platform_api_key\")>"
 #         }
 #       }
 #     }

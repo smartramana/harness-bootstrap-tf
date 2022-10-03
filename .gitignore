@@ -1,7 +1,8 @@
 terraform.*
 *.terraform*
-*.tfvars
+*bootstrap.tfvars
 contrib/examples/vars.tf
 .kube
 contrib/manifests/*.yml
-harness-bootstrap-orgs/*.yml
+harness-provision/*.yml
+*.json

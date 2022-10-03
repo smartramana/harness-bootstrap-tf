@@ -1,6 +1,6 @@
 inputSet:
-  identifier: "tf_base"
-  name: "tf_base"
+  identifier: "tf_base_apply"
+  name: "tf_base_apply"
   tags: {}
   orgIdentifier: "cristian_lab_devsecops_org_ifJl"
   projectIdentifier: "cristian_lab_devsecops_org_ifJl"

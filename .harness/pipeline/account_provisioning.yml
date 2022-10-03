@@ -54,10 +54,10 @@ pipeline:
                                       spec:
                                         gitFetchType: Branch
                                         repoName: ""
+                                        branch: <+stage.variables.tf_branch>
                                         paths:
                                           - <+stage.variables.tf_remote_vars>
-                                        branch: <+stage.variables.tf_branch>
-                                        connectorRef: devsecops_connector_github_connector_X3hT
+                                        connectorRef: devsecops_connector_github_connector_2Ds6
                               - varFile:
                                   identifier: vars
                                   spec:

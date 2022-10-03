@@ -30,7 +30,7 @@ pipeline:
                                 type: Github
                                 spec:
                                   gitFetchType: Branch
-                                  connectorRef: devsecops_connector_github_connector_2Ds6
+                                  connectorRef: <+stage.variables.harness_git_connector>
                                   branch: <+stage.variables.tf_branch>
                                   folderPath: <+stage.variables.tf_folder>
                             secretManagerRef: harnessSecretManager
@@ -80,19 +80,33 @@ pipeline:
                             disallowPipelineExecutor: false
                           approverInputs: []
                         timeout: 1d
-                    - step:
-                        type: TerraformApply
-                        name: TF Apply
-                        identifier: TF_Apply
-                        spec:
-                          configuration:
-                            type: InheritFromPlan
-                          provisionerIdentifier: <+stage.variables.tf_provision_identifier>
-                        timeout: 10m
-                        when:
-                          stageStatus: Success
-                          condition: <+stage.variables.tf_action> == "apply"
-                        failureStrategies: []
+                    - parallel:
+                        - step:
+                            type: TerraformApply
+                            name: TF Apply
+                            identifier: TF_Apply
+                            spec:
+                              configuration:
+                                type: InheritFromPlan
+                              provisionerIdentifier: <+stage.variables.tf_provision_identifier>
+                            timeout: 10m
+                            when:
+                              stageStatus: Success
+                              condition: <+stage.variables.tf_action> == "apply"
+                            failureStrategies: []
+                        - step:
+                            type: TerraformDestroy
+                            name: TF Destroy
+                            identifier: TF_Destroy
+                            spec:
+                              configuration:
+                                type: InheritFromPlan
+                              provisionerIdentifier: <+stage.variables.tf_provision_identifier>
+                            timeout: 10m
+                            when:
+                              stageStatus: Success
+                              condition: <+stage.variables.tf_action> == "destroy"
+                            failureStrategies: []
                   failureStrategies: []
                   delegateSelectors:
                     - cristian-delegate-tf
@@ -137,6 +151,10 @@ pipeline:
             description: ""
             value: account.Cristian_GOOGLE_BACKEND_CREDENTIALS
           - name: tf_action
+            type: String
+            description: ""
+            value: <+input>
+          - name: harness_git_connector
             type: String
             description: ""
             value: <+input>

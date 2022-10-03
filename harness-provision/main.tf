@@ -20,7 +20,7 @@ module "bootstrap_harness_delegates" {
 
 output "account" {
   value = {
-    organizations    = module.bootstrap_harness_account.organization
-    global_delegates = module.bootstrap_harness_delegates.delegates
+    organizations = module.bootstrap_harness_account.organization
+    delegates     = module.bootstrap_harness_delegates.delegates
   }
 }

@@ -57,7 +57,7 @@ pipeline:
                                         branch: <+stage.variables.tf_branch>
                                         paths:
                                           - <+stage.variables.tf_remote_vars>
-                                        connectorRef: devsecops_connector_github_connector_2Ds6
+                                        connectorRef: <+stage.variables.harness_git_connector>
                               - varFile:
                                   identifier: vars
                                   spec:

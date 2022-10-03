@@ -30,7 +30,7 @@ pipeline:
                                 type: Github
                                 spec:
                                   gitFetchType: Branch
-                                  connectorRef: devsecops_connector_github_connector_X3hT
+                                  connectorRef: devsecops_connector_github_connector_2Ds6
                                   branch: <+stage.variables.tf_branch>
                                   folderPath: <+stage.variables.tf_folder>
                             secretManagerRef: harnessSecretManager

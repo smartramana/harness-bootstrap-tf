@@ -66,6 +66,33 @@ pipeline:
                           provisionerIdentifier: <+stage.variables.tf_provision_identifier>
                         timeout: 10m
                         failureStrategies: []
+                    - step:
+                        type: HarnessApproval
+                        name: Approve
+                        identifier: Approve
+                        spec:
+                          approvalMessage: Please review the following information and approve the pipeline progression
+                          includePipelineExecutionHistory: true
+                          approvers:
+                            userGroups:
+                              - account.SE_Admin
+                            minimumCount: 1
+                            disallowPipelineExecutor: false
+                          approverInputs: []
+                        timeout: 1d
+                    - step:
+                        type: TerraformApply
+                        name: TF Apply
+                        identifier: TF_Apply
+                        spec:
+                          configuration:
+                            type: InheritFromPlan
+                          provisionerIdentifier: <+stage.variables.tf_provision_identifier>
+                        timeout: 10m
+                        when:
+                          stageStatus: Success
+                          condition: <+stage.variables.tf_action> == "apply"
+                        failureStrategies: []
                   failureStrategies: []
                   delegateSelectors:
                     - cristian-delegate-tf
@@ -109,3 +136,7 @@ pipeline:
             type: Secret
             description: ""
             value: account.Cristian_GOOGLE_BACKEND_CREDENTIALS
+          - name: tf_action
+            type: String
+            description: ""
+            value: <+input>

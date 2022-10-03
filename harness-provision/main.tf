@@ -34,5 +34,6 @@ output "account" {
   value = {
     organizations = module.bootstrap_harness_account.organization
     delegates     = module.bootstrap_harness_delegates.delegates
+    connectors    = module.bootstrap_harness_connectors.connectors
   }
 }

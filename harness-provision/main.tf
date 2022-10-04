@@ -37,7 +37,7 @@ module "render_template_files" {
     module.bootstrap_harness_connectors
   ]
   source            = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-templates?ref=main"
-  harness_templates = local.harness_templates
+  harness_templates = local.templates
 }
 
 output "account" {

@@ -13,6 +13,25 @@ pipeline:
         spec:
           execution:
             steps:
+              - step:
+                  type: ShellScript
+                  name: Pull Dependencies
+                  identifier: Pull_Dependencies
+                  spec:
+                    shell: Bash
+                    onDelegate: true
+                    source:
+                      type: Inline
+                      spec:
+                        script: |-
+                          rm -rf <+stage.variables.git_repo>
+
+                          git
+
+                          #git clone <+stage.variables.git_repo>
+                    environmentVariables: []
+                    outputVariables: []
+                  timeout: 10m
               - stepGroup:
                   name: Terraform Run
                   identifier: Terraform_Run
@@ -155,6 +174,10 @@ pipeline:
             description: ""
             value: <+input>
           - name: harness_git_connector
+            type: String
+            description: ""
+            value: <+input>
+          - name: git_repo
             type: String
             description: ""
             value: <+input>

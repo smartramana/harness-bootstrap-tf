@@ -134,6 +134,10 @@ pipeline:
             type: String
             description: ""
             value: <+input>
+          - name: harness_api_key
+            type: Secret
+            description: ""
+            value: account.cristian_harness_platform_api_key
           - name: tf_backend_bucket
             type: String
             description: ""
@@ -150,7 +154,3 @@ pipeline:
             type: String
             description: ""
             value: <+input>
-          - name: harness_api_key
-            type: Secret
-            description: ""
-            value: account.cristian_harness_platform_api_key

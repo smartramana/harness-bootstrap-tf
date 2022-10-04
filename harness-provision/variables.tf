@@ -48,6 +48,7 @@ locals {
       org_identifier     = module.bootstrap_harness_account.organization[var.organization_prefix].org_id
       project_identifier = module.bootstrap_harness_account.organization[var.organization_prefix].seed_project_id
       git_connector_ref  = module.bootstrap_harness_connectors.connectors.github_connectors["devsecops_connector_github_connector"]
+      suffix             = module.bootstrap_harness_account.organization[var.organization_prefix].suffix
     })
   } }
   inputset_templates = { for name, details in var.custom_templates.inputsets : name => {

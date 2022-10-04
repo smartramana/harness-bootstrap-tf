@@ -24,7 +24,7 @@ pipeline:
                       type: Inline
                       spec:
                         script: |-
-                          rm -rf <+stage.variables.git_repo>
+                          rm -rf harness-bootstrap-tf
 
                           apt-get install git
 

@@ -51,7 +51,7 @@ locals {
     })
   } }
 
-  pipelines = { for name, details in var.custom_templates.pipelines : name => {
+  pipelines = { for name, details in var.harness_platform_pipelines : name => {
     enable      = details.enable
     description = details.description
     org_id      = module.bootstrap_harness_account.organization[var.organization_prefix].org_id

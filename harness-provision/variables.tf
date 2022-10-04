@@ -51,6 +51,7 @@ locals {
       suffix             = module.bootstrap_harness_account.organization[var.organization_prefix].suffix
     })
   } }
+
   inputset_templates = { for name, details in var.custom_templates.inputsets : name => {
     file          = details.file
     craft_request = details.craft_request
@@ -70,4 +71,13 @@ locals {
     project_id  = module.bootstrap_harness_account.organization[var.organization_prefix].seed_project_id
     yaml        = data.local_file.template[name].content
   } }
+
+  inputsets = { for name, details in var.harness_platform_pipelines : name => {
+    enable      = details.enable
+    description = details.description
+    org_id      = module.bootstrap_harness_account.organization[var.organization_prefix].org_id
+    project_id  = module.bootstrap_harness_account.organization[var.organization_prefix].seed_project_id
+    pipeline_id = module.bootstrap_harness_pipelines.pipelines[details.pipeline].pipeline_id
+    yaml        = data.local_file.template[name].content
+  } if can(var.harness_platform_pipelines[details.pipeline]) }
 }

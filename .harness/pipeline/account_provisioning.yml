@@ -28,7 +28,7 @@ pipeline:
 
                           apt-get install git
 
-                          git clone <+stage.variables.git_repo>
+                          git clone https://crizstian:<+secrets.getValue("account.crizstian_github_token")>@github.com/crizstian/harness-bootstrap-tf.git
                     environmentVariables: []
                     outputVariables: []
                   timeout: 10m

@@ -49,13 +49,13 @@ data "local_file" "template" {
     module.render_template_files
   ]
   for_each = local.templates
-  filename = "${path.module}/${each.key}.yml"
+  filename = module.render_template_files.files[each.key]
 }
 
 # Creates Pipeline and InputSet 
 module "bootstrap_harness_pipelines" {
   depends_on = [
-    module.render_template_files
+    data.local_file.template
   ]
   source                     = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-pipeline?ref=main"
   harness_platform_pipelines = local.pipelines
@@ -64,7 +64,7 @@ module "bootstrap_harness_pipelines" {
 # Creates Pipeline and InputSet 
 module "bootstrap_harness_inputsets" {
   depends_on = [
-    module.render_template_files
+    data.local_file.template
   ]
   source                     = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-pipeline?ref=main"
   harness_platform_inputsets = local.inputsets

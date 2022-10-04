@@ -43,7 +43,7 @@ locals {
 
   templates = { for name, details in var.custom_templates.pipelines : name => {
     file = details.file
-    vars = merge(merge(details.vars...), {
+    vars = merge(details.vars, {
       org_identifier     = module.bootstrap_harness_account.organization[var.organization_prefix].org_id
       project_identifier = module.bootstrap_harness_account.organization[var.organization_prefix].seed_project_id
       git_connector_ref  = ""

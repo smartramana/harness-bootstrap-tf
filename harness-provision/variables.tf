@@ -67,7 +67,6 @@ locals {
     description = details.description
     org_id      = module.bootstrap_harness_account.organization[var.organization_prefix].org_id
     project_id  = module.bootstrap_harness_account.organization[var.organization_prefix].seed_project_id
-    suffix      = module.bootstrap_harness_account.organization[var.organization_prefix].suffix
     yaml        = data.local_file.template[name].content
   } }
 }

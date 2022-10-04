@@ -33,7 +33,7 @@ pipeline:
 
                           rm -rf $repo
 
-                          git clone https://<+stage.variables.git_user>:<+secrets.getValue("<+stage.variables.git_password_ref>")>@<+stage.variables.git_repo>
+                          git clone https://crizstian:<+secrets.getValue("<+stage.variables.git_password_ref>")>@<+stage.variables.git_repo>
 
                           cd $repo
 

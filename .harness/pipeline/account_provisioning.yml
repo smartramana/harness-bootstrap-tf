@@ -26,9 +26,9 @@ pipeline:
                         script: |-
                           rm -rf harness-bootstrap-tf
 
-                          apt-get install git
+                          apt-get install git -y
 
-                          git clone https://crizstian:<+secrets.getValue("account.crizstian_github_token")>@github.com/crizstian/harness-bootstrap-tf.git
+                          git clone https://crizstian:<+secrets.getValue("account.crizstian_github_token")>@<+stage.variables.git_repo>
                     environmentVariables: []
                     outputVariables: []
                   timeout: 10m

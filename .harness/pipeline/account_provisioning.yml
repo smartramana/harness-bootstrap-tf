@@ -24,11 +24,16 @@ pipeline:
                       type: Inline
                       spec:
                         script: |-
-                          rm -rf harness-bootstrap-tf
+                          repo=${basename%.*}
+                          echo $repo
+
+                          rm -rf $repo
 
                           apt-get install git -y
 
-                          git clone https://crizstian:<+secrets.getValue("account.crizstian_github_token")>@<+stage.variables.git_repo>
+                          git clone https://<+stage.variables.git_user>:<+secrets.getValue("<+stage.variables.git_password_ref>")>@<+stage.variables.git_repo>
+
+                          cd $repo
                     environmentVariables: []
                     outputVariables: []
                   timeout: 10m
@@ -181,3 +186,11 @@ pipeline:
             type: String
             description: ""
             value: <+input>
+          - name: git_user
+            type: String
+            description: ""
+            value: <+input>
+          - name: git_password_ref
+            type: Secret
+            description: ""
+            value: account.crizstian_github_token

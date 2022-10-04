@@ -40,6 +40,14 @@ module "render_template_files" {
   harness_templates = local.pipeline_templates
 }
 
+data "local_file" "template" {
+  depends_on = [
+    module.render_template_files
+  ]
+  for_each = local.pipeline_templates
+  filename = "${path.module}/${each.key}.yml"
+}
+
 module "bootstrap_harness_pipelines" {
   depends_on = [
     module.render_template_files

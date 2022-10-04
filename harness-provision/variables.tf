@@ -84,5 +84,5 @@ locals {
     project_id  = module.bootstrap_harness_account.organization[var.organization_prefix].seed_project_id
     pipeline_id = module.bootstrap_harness_pipelines.pipelines[details.pipeline].pipeline_id
     yaml        = data.local_file.template[name].content
-  } if can(var.harness_platform_inputsets[details.pipeline]) }
+  } if can(var.harness_platform_pipelines[details.pipeline]) }
 }

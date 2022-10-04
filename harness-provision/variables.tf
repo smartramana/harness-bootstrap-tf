@@ -12,6 +12,9 @@ variable "harness_platform_github_connectors" {
 variable "harness_platform_pipelines" {
   default = {}
 }
+variable "harness_platform_inputsets" {
+  default = {}
+}
 # ---
 variable "custom_templates" {
   default = {}
@@ -72,12 +75,12 @@ locals {
     yaml        = data.local_file.template[name].content
   } }
 
-  inputsets = { for name, details in var.harness_platform_pipelines : name => {
+  inputsets = { for name, details in var.harness_platform_inputsets : name => {
     enable      = details.enable
     description = details.description
     org_id      = module.bootstrap_harness_account.organization[var.organization_prefix].org_id
     project_id  = module.bootstrap_harness_account.organization[var.organization_prefix].seed_project_id
     pipeline_id = module.bootstrap_harness_pipelines.pipelines[details.pipeline].pipeline_id
     yaml        = data.local_file.template[name].content
-  } if can(var.harness_platform_pipelines[details.pipeline]) }
+  } if can(var.harness_platform_inputsets[details.pipeline]) }
 }

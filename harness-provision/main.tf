@@ -67,7 +67,7 @@ module "bootstrap_harness_inputsets" {
     module.render_template_files
   ]
   source                     = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-pipeline?ref=main"
-  harness_platform_inputsets = local.pipelines
+  harness_platform_inputsets = local.inputsets
 }
 
 output "account" {

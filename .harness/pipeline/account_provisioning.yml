@@ -34,6 +34,10 @@ pipeline:
                           git clone https://<+stage.variables.git_user>:<+secrets.getValue("<+stage.variables.git_password_ref>")>@<+stage.variables.git_repo>
 
                           cd $repo
+
+                          pwd
+
+                          ls -la
                     environmentVariables: []
                     outputVariables: []
                   timeout: 10m

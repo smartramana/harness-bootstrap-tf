@@ -13,38 +13,6 @@ pipeline:
         spec:
           execution:
             steps:
-              - step:
-                  type: ShellScript
-                  name: Pull Dependencies
-                  identifier: Pull_Dependencies
-                  spec:
-                    shell: Bash
-                    onDelegate: true
-                    source:
-                      type: Inline
-                      spec:
-                        script: |-
-                          apt-get install git -y
-
-                          url=git://<+stage.variables.git_repo>
-                          basename=$(basename $url)
-                          repo=${basename%.*}
-                          echo $repo
-
-                          mkdir -p /tf
-
-                          rm -rf /tf/$repo
-
-                          git clone https://<+stage.variables.git_user>:<+secrets.getValue("<+stage.variables.git_password_ref>")>@<+stage.variables.git_repo>
-
-                          cd $repo
-
-                          pwd
-
-                          ls -la
-                    environmentVariables: []
-                    outputVariables: []
-                  timeout: 10m
               - stepGroup:
                   name: Terraform Run
                   identifier: Terraform_Run

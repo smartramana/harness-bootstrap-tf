@@ -24,12 +24,14 @@ pipeline:
                       type: Inline
                       spec:
                         script: |-
+                          apt-get install git -y
+
+                          url=git://<+stage.variables.git_repo>
+                          basename=$(basename $url)
                           repo=${basename%.*}
                           echo $repo
 
                           rm -rf $repo
-
-                          apt-get install git -y
 
                           git clone https://<+stage.variables.git_user>:<+secrets.getValue("<+stage.variables.git_password_ref>")>@<+stage.variables.git_repo>
 

@@ -41,7 +41,7 @@ locals {
   } if details.enable }
 
 
-  templates = { for name, details in var.custom_templates : name => {
+  templates = { for name, details in var.custom_templates.pipelines : name => {
     file = details.file
     vars = merge(merge(details.vars...), {
       org_identifier     = module.bootstrap_harness_account.organization[var.organization_prefix].org_id

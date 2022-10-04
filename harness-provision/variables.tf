@@ -1,13 +1,23 @@
 variable "harness_platform_account_id" {}
 variable "harness_platform_organizations" {}
-variable "harness_platform_delegates" {}
-variable "harness_platform_github_connectors" {}
-
-variable "organization_prefix" {
-  default = ""
-}
 variable "harness_platform_api_key" {
   sensitive = true
+}
+variable "harness_platform_delegates" {
+  default = {}
+}
+variable "harness_platform_github_connectors" {
+  default = {}
+}
+variable "harness_platform_pipelines" {
+  default = {}
+}
+# ---
+variable "custom_templates" {
+  default = {}
+}
+variable "organization_prefix" {
+  default = ""
 }
 
 locals {
@@ -29,5 +39,15 @@ locals {
       token_ref = try(details.credentials.http.token_ref_id, "")
     }
   } if details.enable }
+
+
+  templates = { for name, details in var.custom_templates : name => {
+    file = details.file
+    vars = merge(merge(details.vars...), {
+      org_identifier     = module.bootstrap_harness_account.organization[var.organization_prefix].org_id
+      project_identifier = module.bootstrap_harness_account.organization[var.organization_prefix].seed_project_id
+      git_connector_ref  = ""
+    })
+  } }
 
 }

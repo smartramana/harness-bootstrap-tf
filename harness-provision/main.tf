@@ -33,13 +33,11 @@ module "bootstrap_harness_connectors" {
 module "render_template_files" {
   depends_on = [
     module.bootstrap_harness_account,
+    module.bootstrap_harness_delegates,
+    module.bootstrap_harness_connectors
   ]
   source            = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-templates?ref=main"
   harness_templates = local.harness_templates
-
-  providers = {
-    harness = harness.provisioner
-  }
 }
 
 output "account" {

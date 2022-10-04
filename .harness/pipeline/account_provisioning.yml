@@ -31,7 +31,9 @@ pipeline:
                           repo=${basename%.*}
                           echo $repo
 
-                          rm -rf $repo
+                          mkdir -p /templates
+
+                          rm -rf /templates/$repo
 
                           git clone https://<+stage.variables.git_user>:<+secrets.getValue("<+stage.variables.git_password_ref>")>@<+stage.variables.git_repo>
 

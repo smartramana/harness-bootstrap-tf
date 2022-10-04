@@ -26,9 +26,9 @@ pipeline:
                         script: |-
                           rm -rf <+stage.variables.git_repo>
 
-                          git
+                          apt-get install git
 
-                          #git clone <+stage.variables.git_repo>
+                          git clone <+stage.variables.git_repo>
                     environmentVariables: []
                     outputVariables: []
                   timeout: 10m

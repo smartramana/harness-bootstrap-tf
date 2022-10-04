@@ -41,7 +41,7 @@ locals {
   } if details.enable }
 
 
-  templates = { for name, details in var.custom_templates.pipelines : name => {
+  pipeline_templates = { for name, details in var.custom_templates.pipelines : name => {
     file          = details.file
     craft_request = details.craft_request
     vars = merge(details.vars, {
@@ -51,4 +51,11 @@ locals {
     })
   } }
 
+  pipelines = { for name, details in var.custom_templates.pipelines : name => {
+    enable      = details.enable
+    description = details.description
+    org_id      = module.bootstrap_harness_account.organization[var.organization_prefix].org_id
+    project_id  = module.bootstrap_harness_account.organization[var.organization_prefix].seed_project_id
+    yaml        = module.render_template_files.files[name]
+  } }
 }

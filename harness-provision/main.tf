@@ -37,7 +37,15 @@ module "render_template_files" {
     module.bootstrap_harness_connectors
   ]
   source            = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-templates?ref=main"
-  harness_templates = local.templates
+  harness_templates = local.pipeline_templates
+}
+
+module "bootstrap_harness_pipelines" {
+  depends_on = [
+    module.render_template_files
+  ]
+  source                     = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-pipeline?ref=main"
+  harness_platform_pipelines = local.pipelines
 }
 
 output "account" {
@@ -45,6 +53,6 @@ output "account" {
     organizations = module.bootstrap_harness_account.organization
     delegates     = module.bootstrap_harness_delegates.delegates
     connectors    = module.bootstrap_harness_connectors.connectors
-    files         = module.render_template_files.files
+    pipelines     = module.bootstrap_harness_pipelines.pipelines
   }
 }

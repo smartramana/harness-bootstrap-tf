@@ -30,11 +30,23 @@ module "bootstrap_harness_connectors" {
   }
 }
 
+module "render_template_files" {
+  depends_on = [
+    module.bootstrap_harness_account,
+  ]
+  source            = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-templates?ref=main"
+  harness_templates = local.harness_templates
+
+  providers = {
+    harness = harness.provisioner
+  }
+}
+
 output "account" {
   value = {
     organizations = module.bootstrap_harness_account.organization
     delegates     = module.bootstrap_harness_delegates.delegates
     connectors    = module.bootstrap_harness_connectors.connectors
-    templates     = local.templates
+    files         = module.render_template_files.files
   }
 }

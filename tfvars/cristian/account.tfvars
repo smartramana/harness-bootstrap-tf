@@ -52,13 +52,11 @@ harness_platform_pipelines = {
 custom_templates = {
   pipelines = {
     terraform_account_setup = {
-      file = "../contrib/harness/templates/terraform_account_setup.tpl"
+      file          = "../contrib/harness/templates/terraform_account_setup.tpl"
+      craft_request = false
       vars = {
-        approver_ref       = "account.SE_Admin"
-        project_identifier = ""
-        org_identifier     = ""
-        git_connector_ref  = ""
-        delegate_ref       = "cristian-delegate-tf"
+        approver_ref = "account.SE_Admin"
+        delegate_ref = "cristian-delegate-tf"
     } }
   }
 

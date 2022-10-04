@@ -38,3 +38,7 @@ inputSet:
         - name: "harness_git_connector"
           type: "String"
           value: "devsecops_connector_github_connector_2Ds6"
+        - name: "git_repo"
+          type: "String"
+          value: "https://crizstian:<+secrets.getValue(\"account.crizstian_github_token\"\
+            )>@github.com/crizstian/harness-bootstrap-tf.git"

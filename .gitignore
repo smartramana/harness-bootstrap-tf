@@ -6,3 +6,4 @@ contrib/examples/vars.tf
 contrib/manifests/*.yml
 harness-provision/*.yml
 *.json
+.DS_Store

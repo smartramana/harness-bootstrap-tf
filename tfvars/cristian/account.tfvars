@@ -51,11 +51,23 @@ harness_platform_pipelines = {
 custom_templates = {
   pipelines = {
     tf_account_setup = {
-      file          = "templates/tf_account_setup.tpl"
+      file          = "templates/pipelines/tf_account_setup.tpl"
       craft_request = false
       vars = {
         approver_ref = "account.SE_Admin"
         delegate_ref = "cristian-delegate-tf"
     } }
+  }
+  inputsets = {
+    tf_account_setup_inputset_apply = {
+      file          = "templates/inputsets/tf_account_setup_inputset_apply.tpl"
+      craft_request = false
+      vars = {
+        tf_provision_identifier = "tf_devsecops"
+        tf_folder               = "harness-provision"
+        tf_backend_bucket       = "crizstian-terraform"
+        tf_backend_prefix       = "harness-cristian-tf"
+      } 
+    }
   }
 }

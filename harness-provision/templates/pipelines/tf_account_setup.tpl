@@ -1,7 +1,7 @@
 pipeline:
   name: TF Account Setup
-  identifier: TF_Account_Setup
-  projectIdentifier: ${project_identifier}
+  identifier: TF_Account_Setup_${suffix}
+  projectIdentifier: ${project_identifier}_${suffix}
   orgIdentifier: ${org_identifier}
   tags: {}
   stages:

@@ -50,12 +50,24 @@ locals {
       git_connector_ref  = module.bootstrap_harness_connectors.connectors.github_connectors["devsecops_connector_github_connector"]
     })
   } }
+  inputset_templates = { for name, details in var.custom_templates.inputsets : name => {
+    file          = details.file
+    craft_request = details.craft_request
+    vars = merge(details.vars, {
+      org_identifier     = module.bootstrap_harness_account.organization[var.organization_prefix].org_id
+      project_identifier = module.bootstrap_harness_account.organization[var.organization_prefix].seed_project_id
+      suffix             = module.bootstrap_harness_account.organization[var.organization_prefix].suffix
+      tf_workspace       = terraform.workspace
+      tf_remote_vars     = "tfvars/${terraform.workspace}/account.tfvars"
+    })
+  } }
 
   pipelines = { for name, details in var.harness_platform_pipelines : name => {
     enable      = details.enable
     description = details.description
     org_id      = module.bootstrap_harness_account.organization[var.organization_prefix].org_id
     project_id  = module.bootstrap_harness_account.organization[var.organization_prefix].seed_project_id
+    suffix      = module.bootstrap_harness_account.organization[var.organization_prefix].suffix
     yaml        = data.local_file.template[name].content
   } }
 }

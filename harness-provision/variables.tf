@@ -67,7 +67,7 @@ locals {
     })
   } }
 
-  templates = merge(pipeline_templates, inputset_templates)
+  templates = merge(local.pipeline_templates, local.inputset_templates)
 
   pipelines = { for name, details in var.harness_platform_pipelines : name => {
     enable      = details.enable

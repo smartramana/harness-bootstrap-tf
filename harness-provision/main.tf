@@ -1,6 +1,7 @@
 # Create Organizations
 module "bootstrap_harness_account" {
   source                         = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-project?ref=main"
+  suffix                         = random_string.suffix.id
   harness_platform_organizations = var.harness_platform_organizations
 
   providers = {
@@ -25,6 +26,7 @@ module "bootstrap_harness_connectors" {
     module.bootstrap_harness_account,
   ]
   source                             = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-connectors?ref=main"
+  suffix                             = random_string.suffix.id
   harness_platform_github_connectors = local.github_connectors
 
   providers = {
@@ -32,50 +34,13 @@ module "bootstrap_harness_connectors" {
   }
 }
 
-# Renders Pipeline and InputSet files in order to provision it with terraform
-module "render_template_files" {
-  depends_on = [
-    module.bootstrap_harness_account,
-    module.bootstrap_harness_delegates,
-    module.bootstrap_harness_connectors
-  ]
-  source            = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-templates?ref=main"
-  harness_templates = local.templates
+output "organizations" {
+  value = module.bootstrap_harness_account.organization
+}
+output "delegates" {
+  value = module.bootstrap_harness_delegates.delegates
+}
+output "connectors" {
+  value = module.bootstrap_harness_connectors.connectors
 }
 
-# Loads Pipeline and InputSet files in order to provision it with terraform
-data "local_file" "template" {
-  depends_on = [
-    module.render_template_files
-  ]
-  for_each = local.templates
-  filename = module.render_template_files.files[each.key]
-}
-
-# Creates Pipeline and InputSet 
-module "bootstrap_harness_pipelines" {
-  depends_on = [
-    data.local_file.template
-  ]
-  source                     = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-pipeline?ref=main"
-  harness_platform_pipelines = local.pipelines
-}
-
-# Creates Pipeline and InputSet 
-module "bootstrap_harness_inputsets" {
-  depends_on = [
-    data.local_file.template
-  ]
-  source                     = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-pipeline?ref=main"
-  harness_platform_inputsets = local.inputsets
-}
-
-output "account" {
-  value = {
-    organizations = module.bootstrap_harness_account.organization
-    delegates     = module.bootstrap_harness_delegates.delegates
-    connectors    = module.bootstrap_harness_connectors.connectors
-    pipelines     = module.bootstrap_harness_pipelines.pipelines
-    inputsets     = module.bootstrap_harness_inputsets.inputsets
-  }
-}

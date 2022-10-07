@@ -74,7 +74,7 @@ custom_templates = {
         tf_folder               = "harness-provision"
         tf_backend_bucket       = "crizstian-terraform"
         tf_backend_prefix       = "harness-cristian-tf"
-      } 
+      }
     }
   }
 }

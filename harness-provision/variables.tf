@@ -77,8 +77,8 @@ locals {
         {
           name           = key
           pipeline_id    = module.bootstrap_harness_pipelines.pipelines[var.harness_platform_inputsets[key].pipeline].pipeline_id
-          tf_workspace   = terraform.workspace
-          tf_remote_vars = "tfvars/${terraform.workspace}/account.tfvars"
+          tf_workspace   = "<+trigger.sourceBranch>" #terraform.workspace
+          tf_remote_vars = "tfvars/<+trigger.sourceBranch>/account.tfvars"
       })
   }) }
 

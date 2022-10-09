@@ -47,46 +47,24 @@ locals {
       }
   }) if details.enable }
 
-  pipeline_templates = { for key, details in var.custom_templates.pipelines : key => merge(
-    details,
-    {
-      vars = merge(
-        details.vars,
-        local.common_schema,
-        {
-          name              = key
-          git_connector_ref = module.bootstrap_harness_connectors.connectors.github_connectors["devsecops_connector_github_connector"]
-        }
-      )
-  }) }
 
-  pipelines = { for name, details in var.harness_platform_pipelines : name => merge(
-    details,
-    local.common_schema,
-    {
-      yaml = data.local_file.pipeline_template[name].content
-    }
-  ) }
-
-  inputset_templates = { for key, details in var.custom_templates.inputsets : key => merge(
+  pipelines = { for key, details in var.harness_platform_pipelines : key => merge(
     details,
     {
-      vars = merge(
-        details.vars,
-        local.common_schema,
-        {
-          name           = key
-          pipeline_id    = module.bootstrap_harness_pipelines.pipelines[var.harness_platform_inputsets[key].pipeline].pipeline_id
-          tf_workspace   = terraform.workspace
-          tf_remote_vars = "tfvars/${terraform.workspace}/account.tfvars"
-      })
-  }) }
-
-  inputsets = { for name, details in var.harness_platform_inputsets : name => merge(
-    details,
-    local.common_schema,
-    {
-      pipeline_id = module.bootstrap_harness_pipelines.pipelines[details.pipeline].pipeline_id
-      yaml        = data.local_file.inputset_template[name].content
-  }) if can(var.harness_platform_pipelines[details.pipeline]) }
+      common_schema = local.common_schema
+      custom_template = {
+        pipeline = merge(
+          details.custom_template.pipeline,
+          {
+            vars = merge(
+              details.custom_template.pipeline.vars,
+              {
+                git_connector_ref = module.bootstrap_harness_connectors.connectors.github_connectors["devsecops_connector_github_connector"]
+              }
+            )
+        })
+        inputset = try(details.custom_template.inputset, {})
+      }
+    }) if can(details.custom_template.pipeline)
+  }
 }

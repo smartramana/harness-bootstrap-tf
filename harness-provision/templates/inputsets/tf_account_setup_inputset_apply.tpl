@@ -16,7 +16,7 @@ inputSet:
           value: ${tf_provision_identifier}
         - name: tf_branch
           type: String
-          value: <+codebase.sourceBranch>
+          value: <+trigger.sourceBranch>
         - name: tf_folder
           type: String
           value: ${tf_folder}

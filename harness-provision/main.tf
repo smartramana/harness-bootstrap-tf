@@ -15,9 +15,11 @@ module "bootstrap_harness_delegates" {
     module.bootstrap_harness_account,
   ]
   source                     = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-delegate?ref=main"
-  harness_platform_delegates = var.harness_platform_delegates
+  suffix                     = random_string.suffix.id
+  harness_platform_delegates = local.delegates
   harness_platform_api_key   = var.harness_platform_api_key
   harness_account_id         = var.harness_platform_account_id
+  harness_organization_id    = module.bootstrap_harness_account.organization[var.organization_prefix].org_id
 }
 
 # Create connectors
@@ -49,7 +51,7 @@ output "organizations" {
   value = module.bootstrap_harness_account.organization
 }
 output "delegates" {
-  value = module.bootstrap_harness_delegates.delegates
+  value = module.bootstrap_harness_delegates.manifests
 }
 output "connectors" {
   value = module.bootstrap_harness_connectors.connectors

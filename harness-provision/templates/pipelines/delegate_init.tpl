@@ -80,7 +80,12 @@ pipeline:
                   failureStrategies: []
             rollbackSteps: []
         tags: {}
-        failureStrategies: []
+        failureStrategies:
+          - onFailure:
+              errors:
+                - AllErrors
+              action:
+                type: Abort
         variables:
           - name: TF_VERSION
             type: String

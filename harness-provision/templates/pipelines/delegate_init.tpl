@@ -12,13 +12,13 @@ pipeline:
         type: Deployment
         spec:
           serviceConfig:
-            serviceRef: delegate_${suffix}
+            serviceRef: ${service_ref}
             serviceDefinition:
               spec:
                 variables: []
               type: Kubernetes
           infrastructure:
-            environmentRef: harness_${suffix}
+            environmentRef: ${environment_ref}
             infrastructureDefinition:
               type: KubernetesDirect
               spec:

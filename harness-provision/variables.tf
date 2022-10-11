@@ -82,7 +82,12 @@ locals {
             vars = merge(
               details.custom_template.pipeline.vars,
               {
+                # tf_account_setup
                 git_connector_ref = module.bootstrap_harness_connectors.connectors.github_connectors["devsecops_connector_github_connector"]
+
+                # delegate_init
+                service_ref     = harness_platform_service.service.identifier
+                environment_ref = harness_platform_environment.environment.identifier
               }
             )
         })

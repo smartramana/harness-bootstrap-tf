@@ -9,7 +9,7 @@ module "bootstrap_harness_account" {
   }
 }
 
-# Create Delegates and downloads the manifest (run locally only); manifests are not exported or upload to an artifact repository
+# Create Delegates and uploads manifests to Harness FileStore: => Account/Org/File
 module "bootstrap_harness_delegates" {
   depends_on = [
     module.bootstrap_harness_account,

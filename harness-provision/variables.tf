@@ -69,7 +69,7 @@ locals {
       }
   }) if details.enable }
 
-
+  git_prefix = "_github_connector"
 
   pipelines = { for key, details in var.harness_platform_pipelines : key => merge(
     details,
@@ -83,7 +83,7 @@ locals {
               details.custom_template.pipeline.vars,
               {
                 # tf_account_setup
-                git_connector_ref = module.bootstrap_harness_connectors.connectors.github_connectors["devsecops_connector_github_connector"].identifier
+                git_connector_ref = module.bootstrap_harness_connectors.connectors.github_connectors["${details.custom_template.pipeline.vars.git_connector}${local.git_prefix}"].identifier
 
                 # delegate_init
                 service_ref     = harness_platform_service.service.identifier

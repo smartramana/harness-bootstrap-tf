@@ -12,10 +12,21 @@ harness_platform_organizations = {
 harness_platform_delegates = {
   k8s = {
     "cristian-delegate-tf" = {
-      enable = true
+      enable       = true
+      auto_install = true
+      platform     = "gcp"
+      os           = "linux"
     }
-    "cristian-test-tf" = {
-      enable = false
+    "cristian-delegate-docker" = {
+      enable       = false
+      auto_install = false
+      platform     = "aws"
+      os           = "linux"
+      connection = {
+        user           = "ec2 user"
+        host           = "ec2 ip address"
+        private_key_id = "ec2 private key"
+      }
     }
   }
 }
@@ -47,8 +58,9 @@ harness_platform_pipelines = {
         file          = "templates/pipelines/tf_account_setup.tpl"
         craft_request = false
         vars = {
-          approver_ref = "account.SE_Admin"
-          delegate_ref = "cristian-delegate-tf"
+          approver_ref  = "account.SE_Admin"
+          delegate_ref  = "cristian-delegate-tf"
+          git_connector = "devsecops_connector"
         }
       }
       inputset = {

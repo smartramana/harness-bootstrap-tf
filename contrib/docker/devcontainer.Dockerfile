@@ -36,7 +36,8 @@ RUN GO111MODULE=on  go install github.com/uudashr/gopkgs/v2/cmd/gopkgs@latest
 RUN GO111MODULE=on  go install github.com/cuonglm/gocmt@latest
 RUN rm -rf $GOPATH/pkg/* $GOPATH/src/* /root/.cache/go-build
 RUN go env -w GOPRIVATE=github.com/crizstian
-# Install Terraform
+
+# Download Terraform
 RUN git clone --depth=1 https://github.com/tfutils/tfenv.git ~/.tfenv && \ 
   echo 'export PATH="$HOME/.tfenv/bin:$PATH"' >> /bin/envs && \
   ln -s ~/.tfenv/bin/* /usr/local/bin
@@ -44,9 +45,23 @@ RUN which tfenv && \
   tfenv install latest && \
   tfenv use latest
 
+# Download kubectl
 RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.18.0/bin/linux/amd64/kubectl && \
   chmod +x ./kubectl && \
   sudo mv ./kubectl /usr/local/bin/kubectl && \
   kubectl version --client
+
+# Downloading gcloud package
+RUN curl https://dl.google.com/dl/cloudsdk/release/google-cloud-sdk.tar.gz > /tmp/google-cloud-sdk.tar.gz
+
+# Installing the package
+RUN mkdir -p /usr/local/gcloud \
+  && tar -C /usr/local/gcloud -xvf /tmp/google-cloud-sdk.tar.gz \
+  && /usr/local/gcloud/google-cloud-sdk/install.sh
+
+# Adding the package path to local
+ENV PATH $PATH:/usr/local/gcloud/google-cloud-sdk/bin
+
+RUN gcloud components install gke-gcloud-auth-plugin --quiet
 
 WORKDIR /workspace

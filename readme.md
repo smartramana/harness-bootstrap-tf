@@ -8,6 +8,7 @@ This repo contains all the necessary to provision and onboard a new Harness acco
 
 Implementation code is organized with the following structure
 
+
 ```bash
 .
 ├── contrib

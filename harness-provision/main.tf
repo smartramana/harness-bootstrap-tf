@@ -3,10 +3,6 @@ module "bootstrap_harness_account" {
   source                         = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-project?ref=main"
   suffix                         = random_string.suffix.id
   harness_platform_organizations = var.harness_platform_organizations
-
-  providers = {
-    harness = harness.provisioner
-  }
 }
 
 # Create Delegates and uploads manifests to Harness FileStore: => Account/Org/File
@@ -33,10 +29,6 @@ module "bootstrap_harness_connectors" {
   harness_platform_k8s_connectors    = local.k8s_connectors
   harness_platform_docker_connectors = local.docker_connectors
   harness_platform_aws_connectors    = local.aws_connectors
-
-  providers = {
-    harness = harness.provisioner
-  }
 }
 
 # Creates Pipeline 

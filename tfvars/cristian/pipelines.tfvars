@@ -9,7 +9,7 @@ harness_platform_pipelines = {
         vars = {
           approver_ref  = "account.SE_Admin"
           delegate_ref  = "cristian-delegate-tf"
-          git_connector = "devsecops_connector"
+          git_connector = "devsecops"
         }
       }
       inputset = {
@@ -40,7 +40,9 @@ harness_platform_pipelines = {
       pipeline = {
         file          = "templates/pipelines/delegate_init.tpl"
         craft_request = false
-        vars          = {}
+        vars = {
+          git_connector = "devsecops"
+        }
       }
     }
   }

@@ -28,7 +28,7 @@ module "bootstrap_harness_connectors" {
   harness_platform_github_connectors = local.github_connectors
   harness_platform_k8s_connectors    = local.k8s_connectors
   harness_platform_docker_connectors = local.docker_connectors
-  harness_platform_aws_connectors    = local.aws_connectors
+  # harness_platform_aws_connectors    = local.aws_connectors
 }
 
 # Creates Pipeline 

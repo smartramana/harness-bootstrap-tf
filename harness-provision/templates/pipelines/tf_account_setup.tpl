@@ -133,7 +133,19 @@ pipeline:
             type: String
             description: ""
             value: <+input>
-          - name: tf_remote_vars
+          - name: tf_account_vars
+            type: String
+            description: ""
+            value: <+input>
+          - name: tf_connectors_vars
+            type: String
+            description: ""
+            value: <+input>
+          - name: tf_delegates_vars
+            type: String
+            description: ""
+            value: <+input>
+          - name: tf_pipelines_vars
             type: String
             description: ""
             value: <+input>

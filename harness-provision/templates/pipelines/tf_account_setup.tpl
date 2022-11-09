@@ -56,10 +56,10 @@ pipeline:
                                         repoName: ""
                                         branch: <+stage.variables.tf_branch>
                                         paths:
-                                          - <+stage.variables.tf_account_vars>
-                                          - <+stage.variables.tf_connectors_vars>
-                                          - <+stage.variables.tf_delegates_vars>
-                                          - <+stage.variables.tf_pipelines_vars>
+                                          - tfvars/<+trigger.sourceBranch>/account.tfvars
+                                          - tfvars/<+trigger.sourceBranch>/connectors.tfvars
+                                          - tfvars/<+trigger.sourceBranch>/delegates.tfvars
+                                          - tfvars/<+trigger.sourceBranch>/pipelines.tfvars
                                         connectorRef: ${git_connector_ref}
                               - varFile:
                                   identifier: vars
@@ -130,22 +130,6 @@ pipeline:
             description: ""
             value: <+input>
           - name: tf_workspace
-            type: String
-            description: ""
-            value: <+input>
-          - name: tf_account_vars
-            type: String
-            description: ""
-            value: <+input>
-          - name: tf_connectors_vars
-            type: String
-            description: ""
-            value: <+input>
-          - name: tf_delegates_vars
-            type: String
-            description: ""
-            value: <+input>
-          - name: tf_pipelines_vars
             type: String
             description: ""
             value: <+input>

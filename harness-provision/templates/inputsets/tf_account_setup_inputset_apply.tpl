@@ -23,18 +23,6 @@ inputSet:
         - name: tf_workspace
           type: String
           value: ${tf_workspace}
-        - name: tf_account_vars
-          type: String
-          value: ${tf_account_vars}
-        - name: tf_connectors_vars
-          type: String
-          value: ${tf_connectors_vars}
-        - name: tf_delegates_vars
-          type: String
-          value: ${tf_delegates_vars}
-        - name: tf_pipelines_vars
-          type: String
-          value: ${tf_pipelines_vars}
         - name: tf_backend_bucket
           type: String
           value: ${tf_backend_bucket}

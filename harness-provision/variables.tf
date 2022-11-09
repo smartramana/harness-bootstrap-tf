@@ -9,6 +9,12 @@ variable "harness_platform_delegates" {
 variable "harness_platform_github_connectors" {
   default = {}
 }
+variable "harness_platform_docker_connectors" {
+  default = {}
+}
+variable "harness_platform_aws_connectors" {
+  default = {}
+}
 variable "harness_platform_pipelines" {
   default = {}
 }

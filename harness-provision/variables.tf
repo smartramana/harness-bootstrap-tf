@@ -98,8 +98,8 @@ locals {
                 git_connector_ref = module.bootstrap_harness_connectors.connectors.github_connectors["${details.custom_template.pipeline.vars.git_connector}${local.git_prefix}"].identifier
 
                 # delegate_init
-                service_ref     = harness_platform_service.service.identifier
-                environment_ref = harness_platform_environment.environment.identifier
+                service_ref     = module.bootstrap_harness_delegates.delegate_init.service_ref
+                environment_ref = module.bootstrap_harness_delegates.delegate_init.environment_ref
               }
             )
         })

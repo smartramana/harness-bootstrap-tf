@@ -5,20 +5,25 @@ module "bootstrap_harness_account" {
   harness_platform_organizations = var.harness_platform_organizations
 }
 
-# Create Delegates and uploads manifests to Harness FileStore: => Account/Org/File
+# Creates and uploads delegates manifests to Harness FileStore: => Account/Org/File
+# TODO: Install delegates
 module "bootstrap_harness_delegates" {
   depends_on = [
     module.bootstrap_harness_account,
   ]
-  source                     = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-delegate?ref=main"
-  suffix                     = random_string.suffix.id
+  source = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-delegate?ref=main"
+  suffix = random_string.suffix.id
+
   harness_platform_delegates = local.delegates
   harness_platform_api_key   = var.harness_platform_api_key
   harness_account_id         = var.harness_platform_account_id
   harness_organization_id    = module.bootstrap_harness_account.organization[var.organization_prefix].org_id
+
+  enable_delegate_pipeline_init = true
 }
 
-# Create connectors
+# Creates and Setup Harness connectors
+# TODO: Add GCP, Azure and CCM connectors
 module "bootstrap_harness_connectors" {
   depends_on = [
     module.bootstrap_harness_account,
@@ -30,6 +35,9 @@ module "bootstrap_harness_connectors" {
   harness_platform_docker_connectors = local.docker_connectors
   harness_platform_aws_connectors    = local.aws_connectors
 }
+
+# Creates Pipeline Templates
+# TODO: Add Module
 
 # Creates Pipeline 
 module "bootstrap_harness_pipelines" {

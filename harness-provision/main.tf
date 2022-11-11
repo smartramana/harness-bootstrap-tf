@@ -43,8 +43,7 @@ module "bootstrap_harness_connectors" {
 module "bootstrap_harness_pipelines" {
   depends_on = [
     module.bootstrap_harness_account,
-    harness_platform_service.service,
-    harness_platform_environment.environment
+    module.bootstrap_harness_delegates
   ]
   source                     = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-pipeline?ref=main"
   suffix                     = random_string.suffix.id

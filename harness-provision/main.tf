@@ -17,7 +17,7 @@ module "bootstrap_harness_delegates" {
   harness_platform_delegates = local.delegates
   harness_platform_api_key   = var.harness_platform_api_key
   harness_account_id         = var.harness_platform_account_id
-  harness_organization_id    = module.bootstrap_harness_account.organization[var.organization_prefix].org_id
+  harness_organization       = module.bootstrap_harness_account.organization[var.organization_prefix]
 
   enable_delegate_pipeline_init = true
 }

@@ -84,9 +84,6 @@ locals {
   seed_pipelines = { for org, values in var.harness_platform_organizations : org => merge(
     local.seed_pipeline,
     {
-      org_id     = module.bootstrap_harness_account.organization[org].org_id
-      project_id = module.bootstrap_harness_account.organization[org].seed_project_id
-      suffix     = module.bootstrap_harness_account.organization[org].suffix
       custom_template = {
         pipeline = merge(
           local.seed_pipeline.custom_template.pipeline,
@@ -94,6 +91,9 @@ locals {
             vars = merge(
               local.seed_pipeline.custom_template.pipeline.vars,
               {
+                org_id                  = module.bootstrap_harness_account.organization[org].org_id
+                project_id              = module.bootstrap_harness_account.organization[org].seed_project_id
+                suffix                  = module.bootstrap_harness_account.organization[org].suffix
                 tf_provision_identifier = "tf_${org}"
                 tf_backend_prefix       = org
                 git_connector_ref       = module.bootstrap_harness_connectors.connectors.github_connectors["${values.short_name}${local.git_prefix}"].identifier
@@ -107,7 +107,6 @@ locals {
 
   pipelines = { for key, details in var.harness_platform_pipelines : key => merge(
     details,
-    local.common_schema,
     {
       custom_template = {
         pipeline = merge(
@@ -115,6 +114,7 @@ locals {
           {
             vars = merge(
               details.custom_template.pipeline.vars,
+              local.common_schema,
               {
                 # tf_account_setup
                 git_connector_ref = module.bootstrap_harness_connectors.connectors.github_connectors["${details.custom_template.pipeline.vars.git_connector}${local.git_prefix}"].identifier

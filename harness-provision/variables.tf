@@ -43,9 +43,9 @@ locals {
     suffix     = module.bootstrap_harness_account.organization[var.organization_prefix].suffix
   }
 
-  common_tags   = { tags = ["owner: ${var.organization_prefix}"] }
-  git_prefix    = "_github_connector"
-  seed_pipeline = var.harness_platform_pipelines["seed_pipeline"]
+  common_tags = { tags = ["owner: ${var.organization_prefix}"] }
+  git_prefix  = "_github_connector"
+  # seed_pipeline = var.harness_platform_pipelines["seed_pipeline"]
 
   delegates         = { for type, delegates in var.harness_platform_delegates : type => { for key, value in delegates : key => merge(value, local.common_schema_delegate) } }
   docker_connectors = { for name, details in var.harness_platform_docker_connectors : name => merge(details, local.common_tags) if details.enable }

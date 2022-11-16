@@ -70,6 +70,11 @@ pipeline:
                                           - tfvars/<+trigger.sourceBranch>/delegates.tfvars
                                           - tfvars/<+trigger.sourceBranch>/pipelines.tfvars
                                         connectorRef: ${git_connector_ref}
+                              - varFile:
+                                  identifier: vars
+                                  spec:
+                                    content: harness_platform_api_key = "<+stage.variables.harness_api_key>"
+                                  type: Inline
                           provisionerIdentifier: <+stage.variables.tf_provision_identifier>
                         timeout: 10m
                         failureStrategies: []

@@ -11,3 +11,5 @@ contrib/scripts/start
 contrib/scripts/plan
 contrib/scripts/apply
 contrib/scripts/destroy
+
+commands

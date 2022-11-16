@@ -107,8 +107,8 @@ locals {
 
   pipelines = { for key, details in var.harness_platform_pipelines : key => merge(
     details,
+    local.common_schema,
     {
-      common_schema = local.common_schema
       custom_template = {
         pipeline = merge(
           details.custom_template.pipeline,

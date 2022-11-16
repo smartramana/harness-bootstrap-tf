@@ -39,7 +39,17 @@ module "bootstrap_harness_connectors" {
 # Creates Pipeline Templates
 # TODO: Add Module
 
-# Creates Pipeline 
+# Creates Seed Pipelines for new Orgs
+module "bootstrap_harness_seed_pipelines" {
+  depends_on = [
+    module.bootstrap_harness_account,
+    module.bootstrap_harness_delegates
+  ]
+  source                     = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-pipeline?ref=main"
+  suffix                     = random_string.suffix.id
+  harness_platform_pipelines = local.seed_pipelines
+}
+
 module "bootstrap_harness_pipelines" {
   depends_on = [
     module.bootstrap_harness_account,

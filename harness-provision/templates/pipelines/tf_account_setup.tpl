@@ -41,6 +41,15 @@ pipeline:
                                   bucket = "<+stage.variables.tf_backend_bucket>"
                                   prefix = "<+stage.variables.tf_backend_prefix>"
                             environmentVariables:
+                              - name: HARNESS_ACCOUNT_ID
+                                value: <+stage.variables.harness_account_id>
+                                type: String
+                              - name: HARNESS_PLATFORM_API_KEY
+                                value: <+stage.variables.harness_api_key>
+                                type: String
+                              - name: HARNESS_ENDPOINT
+                                value: <+stage.variables.harness_endpoint>
+                                type: String
                               - name: GOOGLE_BACKEND_CREDENTIALS
                                 value: <+stage.variables.tf_gcp_keys>
                                 type: String
@@ -61,11 +70,6 @@ pipeline:
                                           - tfvars/<+trigger.sourceBranch>/delegates.tfvars
                                           - tfvars/<+trigger.sourceBranch>/pipelines.tfvars
                                         connectorRef: ${git_connector_ref}
-                              - varFile:
-                                  identifier: vars
-                                  spec:
-                                    content: harness_platform_api_key = "<+stage.variables.harness_api_key>"
-                                  type: Inline
                           provisionerIdentifier: <+stage.variables.tf_provision_identifier>
                         timeout: 10m
                         failureStrategies: []
@@ -137,6 +141,14 @@ pipeline:
             type: Secret
             description: ""
             value: account.cristian_harness_platform_api_key
+          - name: harness_account_id
+            type: String
+            description: ""
+            value: Io9SR1H7TtGBq9LVyJVB2w
+          - name: harness_endpoint
+            type: String
+            description: ""
+            value: https://app.harness.io/gateway
           - name: tf_backend_bucket
             type: String
             description: ""

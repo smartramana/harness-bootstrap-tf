@@ -20,7 +20,7 @@ harness_platform_pipelines = {
           vars = {
             tf_folder         = "harness-provision"
             tf_backend_bucket = "crizstian-terraform"
-            tf_workspace      = "<+trigger.sourceBranch>"
+            tf_workspace      = "<+stage.variables.tf_workspace>"
           }
         }
       }

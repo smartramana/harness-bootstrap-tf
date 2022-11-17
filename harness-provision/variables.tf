@@ -81,7 +81,7 @@ locals {
       }
   }) if details.enable }
 
-  seed_pipelines = { for org, values in var.harness_platform_organizations : org => {
+  seed_pipelines = { for org, values in var.harness_platform_organizations : "harness_seed_setup_${values.short_name}" => {
     pipeline = merge(
       { for key, value in local.seed_pipeline : key => value if key != "custom_template" },
       local.seed_pipeline.custom_template.pipeline,

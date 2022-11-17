@@ -19,7 +19,7 @@ module "bootstrap_harness_delegates" {
   harness_account_id         = var.harness_platform_account_id
   harness_organization       = module.bootstrap_harness_account.organization[var.organization_prefix]
 
-  enable_delegate_pipeline_init = true
+  enable_delegate_init_service = true
 }
 
 # Creates and Setup Harness connectors
@@ -40,20 +40,10 @@ module "bootstrap_harness_connectors" {
 # TODO: Add Module
 # ---
 
-# Creates Seed Pipelines for new Orgs
-module "bootstrap_harness_seed_pipelines" {
-  depends_on = [
-    module.bootstrap_harness_account,
-  ]
-  source                     = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-pipeline?ref=main"
-  suffix                     = random_string.suffix.id
-  harness_platform_pipelines = local.seed_pipelines
-}
-
+# # Creates Pipelines
 module "bootstrap_harness_pipelines" {
   depends_on = [
     module.bootstrap_harness_account,
-    module.bootstrap_harness_delegates
   ]
   source                     = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-pipeline?ref=main"
   suffix                     = random_string.suffix.id

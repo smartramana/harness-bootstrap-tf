@@ -38,6 +38,5 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ../:/workspace:cached
-      - ~/.kube:/workspace/.kube:cached
     command: /bin/sh -c "while sleep 1000; do :; done"
     container_name: harness_account

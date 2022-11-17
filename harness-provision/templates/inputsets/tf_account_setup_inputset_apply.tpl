@@ -11,9 +11,6 @@ inputSet:
         identifier: Provisioning
         type: Custom
         variables:
-        - name: tf_provision_identifier
-          type: String
-          value: ${tf_provision_identifier}
         - name: tf_branch
           type: String
           value: <+trigger.sourceBranch>

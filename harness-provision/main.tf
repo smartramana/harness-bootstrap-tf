@@ -6,7 +6,7 @@ module "bootstrap_harness_account" {
 }
 
 # Creates and uploads delegates manifests to Harness FileStore: => Account/Org/File
-# TODO: Install delegates
+# TODO: Auto Install delegates
 module "bootstrap_harness_delegates" {
   depends_on = [
     module.bootstrap_harness_account,
@@ -38,12 +38,12 @@ module "bootstrap_harness_connectors" {
 
 # Creates Pipeline Templates
 # TODO: Add Module
+# ---
 
 # Creates Seed Pipelines for new Orgs
 module "bootstrap_harness_seed_pipelines" {
   depends_on = [
     module.bootstrap_harness_account,
-    module.bootstrap_harness_delegates
   ]
   source                     = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-pipeline?ref=main"
   suffix                     = random_string.suffix.id

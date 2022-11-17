@@ -81,52 +81,69 @@ locals {
       }
   }) if details.enable }
 
-  seed_pipelines = { for org, values in var.harness_platform_organizations : org => merge(
-    local.seed_pipeline,
-    {
-      custom_template = {
-        pipeline = merge(
-          local.seed_pipeline.custom_template.pipeline,
+  seed_pipelines = { for org, values in var.harness_platform_organizations : org => {
+    pipeline = merge(
+      { for key, value in local.seed_pipeline : key => value if key != "custom_template" },
+      local.seed_pipeline.custom_template.pipeline,
+      {
+        vars = merge(
+          local.seed_pipeline.custom_template.pipeline.vars,
           {
-            vars = merge(
-              local.seed_pipeline.custom_template.pipeline.vars,
-              {
-                org_id                  = module.bootstrap_harness_account.organization[org].org_id
-                project_id              = module.bootstrap_harness_account.organization[org].seed_project_id
-                suffix                  = module.bootstrap_harness_account.organization[org].suffix
-                tf_provision_identifier = "tf_${org}"
-                tf_backend_prefix       = org
-                git_connector_ref       = module.bootstrap_harness_connectors.connectors.github_connectors["${values.short_name}${local.git_prefix}"].identifier
-              }
-            )
-        })
-        inputset = try(local.seed_pipeline.custom_template.inputset, {})
-      }
+            org_id                  = module.bootstrap_harness_account.organization[org].org_id
+            project_id              = module.bootstrap_harness_account.organization[org].seed_project_id
+            suffix                  = module.bootstrap_harness_account.organization[org].suffix
+            tf_provision_identifier = "tf_${org}"
+            tf_backend_prefix       = org
+            git_connector_ref       = module.bootstrap_harness_connectors.connectors.github_connectors["${values.short_name}${local.git_prefix}"].identifier
+          }
+        )
     })
+    inputset = { for input, details in try(local.seed_pipeline.custom_template.inputset, {}) : input => merge(details) if details.enable }
+    }
   }
 
-  pipelines = { for key, details in var.harness_platform_pipelines : key => merge(
-    details,
-    {
-      custom_template = {
-        pipeline = merge(
-          details.custom_template.pipeline,
+  pipelines = { for pipe, values in var.harness_platform_pipelines : pipe => {
+    pipeline = merge(
+      { for key, value in values : key => value if key != "custom_template" },
+      values.custom_template.pipeline,
+      {
+        vars = merge(
+          values.custom_template.pipeline.vars,
+          local.common_schema,
           {
-            vars = merge(
-              details.custom_template.pipeline.vars,
-              local.common_schema,
-              {
-                # tf_account_setup
-                git_connector_ref = module.bootstrap_harness_connectors.connectors.github_connectors["${details.custom_template.pipeline.vars.git_connector}${local.git_prefix}"].identifier
-
-                # delegate_init
-                service_ref     = module.bootstrap_harness_delegates.delegate_init.service_ref
-                environment_ref = module.bootstrap_harness_delegates.delegate_init.environment_ref
-              }
-            )
-        })
-        inputset = try(details.custom_template.inputset, {})
+            git_connector_ref = module.bootstrap_harness_connectors.connectors.github_connectors["${values.custom_template.pipeline.vars.git_connector}${local.git_prefix}"].identifier
+            service_ref       = module.bootstrap_harness_delegates.delegate_init.service_ref
+            environment_ref   = module.bootstrap_harness_delegates.delegate_init.environment_ref
+          }
+        )
       }
-    }) if can(details.custom_template.pipeline) && key != "harness_seed_setup"
+    )
+    inputset = { for input, details in try(values.custom_template.inputset, {}) : input => merge(details) if details.enable }
+    } if pipe != "harness_seed_setup"
   }
+
+  # pipelines = { for key, details in var.harness_platform_pipelines : key => merge(
+  #   details,
+  #   {
+  #     custom_template = {
+  #       pipeline = merge(
+  #         details.custom_template.pipeline,
+  #         {
+  #           vars = merge(
+  #             details.custom_template.pipeline.vars,
+  #             local.common_schema,
+  #             {
+  #               # tf_account_setup
+  #               git_connector_ref = module.bootstrap_harness_connectors.connectors.github_connectors["${details.custom_template.pipeline.vars.git_connector}${local.git_prefix}"].identifier
+
+  #               # delegate_init
+  #               service_ref     = module.bootstrap_harness_delegates.delegate_init.service_ref
+  #               environment_ref = module.bootstrap_harness_delegates.delegate_init.environment_ref
+  #             }
+  #           )
+  #       })
+  #       inputset = try(details.custom_template.inputset, {})
+  #     }
+  #   }) if can(details.custom_template.pipeline) && key != "harness_seed_setup"
+  # }
 }

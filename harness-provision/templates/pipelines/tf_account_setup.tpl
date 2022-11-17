@@ -138,18 +138,6 @@ pipeline:
             type: String
             description: ""
             value: <+input>
-          - name: harness_api_key
-            type: Secret
-            description: ""
-            value: account.cristian_harness_platform_api_key
-          - name: harness_account_id
-            type: String
-            description: ""
-            value: Io9SR1H7TtGBq9LVyJVB2w
-          - name: harness_endpoint
-            type: String
-            description: ""
-            value: https://app.harness.io/gateway
           - name: tf_backend_bucket
             type: String
             description: ""
@@ -166,3 +154,15 @@ pipeline:
             type: String
             description: ""
             value: <+input>
+          - name: harness_api_key
+            type: Secret
+            description: ""
+            value: account.cristian_harness_platform_api_key
+          - name: harness_account_id
+            type: String
+            description: ""
+            value: Io9SR1H7TtGBq9LVyJVB2w
+          - name: harness_endpoint
+            type: String
+            description: ""
+            value: https://app.harness.io/gateway

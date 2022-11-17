@@ -165,7 +165,7 @@ pipeline:
           - name: TF_VERSION
             type: String
             description: ""
-            value: 1.2.8
+            value: 1.3.5
           - name: connector_ref
             type: String
             description: ""

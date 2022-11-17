@@ -38,6 +38,7 @@ harness_platform_pipelines = {
           git_connector = "devsecops"
         }
       }
+      inputset = {}
     }
   }
 }

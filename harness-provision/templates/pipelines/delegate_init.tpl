@@ -51,6 +51,8 @@ pipeline:
                               git
                     environmentVariables: []
                     outputVariables: []
+                    delegateSelectors:
+                      - <+stage.variables.delegate_ref>
                   timeout: 10m
               - stepGroup:
                   name: Terraform Ecosystem
@@ -114,6 +116,8 @@ pipeline:
                     stageStatus: Success
                     condition: <+stage.variables.enable_terraform> == "true"
                   failureStrategies: []
+                  delegateSelectors:
+                    - <+stage.variables.delegate_ref>
               - stepGroup:
                   name: GCP Ecosystem
                   identifier: GCP_Ecosystem
@@ -153,6 +157,8 @@ pipeline:
                     stageStatus: Success
                     condition: <+stage.variables.enable_gcloud> == "true"
                   failureStrategies: []
+                  delegateSelectors:
+                    - <+stage.variables.delegate_ref>
             rollbackSteps: []
         tags: {}
         failureStrategies:
@@ -167,6 +173,10 @@ pipeline:
             description: ""
             value: 1.3.5
           - name: connector_ref
+            type: String
+            description: ""
+            value: <+input>
+          - name: delegate_ref
             type: String
             description: ""
             value: <+input>

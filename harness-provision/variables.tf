@@ -14,7 +14,7 @@ variable "harness_platform_delegates" {
   default = {}
 }
 variable "harness_platform_github_connectors" {
-  type    = map(any)
+  #type    = map(any)
   default = {}
 }
 variable "harness_platform_docker_connectors" {
@@ -22,7 +22,7 @@ variable "harness_platform_docker_connectors" {
   default = {}
 }
 variable "harness_platform_aws_connectors" {
-  type    = map(any)
+  # type    = map(any)
   default = {}
 }
 variable "harness_platform_pipelines" {

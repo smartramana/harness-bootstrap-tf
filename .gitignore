@@ -13,3 +13,8 @@ contrib/scripts/apply
 contrib/scripts/destroy
 
 commands
+
+apply.plan
+demo.plan
+tfplan
+tfplan.json

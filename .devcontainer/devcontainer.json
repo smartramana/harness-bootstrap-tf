@@ -145,7 +145,8 @@
         "emeraldwalk.RunOnSave",
         "kevinkyang.auto-comment-blocks",
         "ms-azuretools.vscode-docker",
-        "hashicorp.terraform"
+        "hashicorp.terraform",
+        "tsandall.opa"
     ],
     "forwardPorts": [
         8000

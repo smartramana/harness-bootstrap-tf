@@ -1,7 +1,7 @@
 # harness variables
 variable "harness_platform_api_key" {
-  type      = string
-  sensitive = true
+  type = string
+  //sensitive = true
 }
 variable "harness_platform_account_id" {
   type = string
@@ -10,11 +10,11 @@ variable "harness_platform_organizations" {
   type = map(any)
 }
 variable "harness_platform_delegates" {
-  type    = map(any)
+  type    = any
   default = {}
 }
 variable "harness_platform_github_connectors" {
-  type    = map(any)
+  #type    = map(any)
   default = {}
 }
 variable "harness_platform_docker_connectors" {
@@ -22,7 +22,11 @@ variable "harness_platform_docker_connectors" {
   default = {}
 }
 variable "harness_platform_aws_connectors" {
-  type    = map(any)
+  # type    = map(any)
+  default = {}
+}
+variable "harness_platform_gcp_connectors" {
+  # type    = map(any)
   default = {}
 }
 variable "harness_platform_pipelines" {
@@ -32,6 +36,18 @@ variable "harness_platform_pipelines" {
 variable "harness_platform_inputsets" {
   type    = map(any)
   default = {}
+}
+variable "harness_opa_policies" {
+  #type    = map(any)
+  default = {}
+}
+variable "harness_policy_api_endpoint" {
+  type    = string
+  default = "https://app.harness.io/gateway/pm/api/v1/policies"
+}
+variable "harness_policyset_api_endpoint" {
+  type    = string
+  default = "https://app.harness.io/gateway/pm/api/v1/policies"
 }
 # other variables
 variable "organization_prefix" {
@@ -47,8 +63,12 @@ locals {
     project_id = module.bootstrap_harness_account.organization[var.organization_prefix].seed_project_id
     suffix     = module.bootstrap_harness_account.organization[var.organization_prefix].suffix
   }
-  git_suffix    = "_github_connector"
-  seed_pipeline = var.harness_platform_pipelines["harness_seed_setup"]
+  git_suffix        = "_github_connector"
+  docker_suffix     = "_docker_connector"
+  k8s_suffix        = "_k8s_connector"
+  seed_pipeline     = var.harness_platform_pipelines["harness_seed_setup"]
+  account_args      = "accountIdentifier=${var.harness_platform_account_id}"
+  organization_args = "accountIdentifier=${var.harness_platform_account_id}&orgIdentifier=${local.common_schema.org_id}"
 }
 
 # delegate locals
@@ -61,7 +81,11 @@ locals {
     customClusterNamespace = "harness-delegate-ng"
   }
 
-  delegates = { for type, delegates in var.harness_platform_delegates : type => { for key, value in delegates : key => merge(value, local.common_schema_delegate) } }
+  delegates = { for type, delegates in var.harness_platform_delegates : type =>
+    {
+      for key, value in delegates : key => merge(value, local.common_schema_delegate) if value.enable
+    }
+  }
 }
 
 # github connectors
@@ -89,6 +113,7 @@ locals {
 locals {
   docker_connectors = { for name, details in var.harness_platform_docker_connectors : name => merge(details, local.common_tags) if details.enable }
   aws_connectors    = { for name, details in var.harness_platform_aws_connectors : name => merge(details, local.common_tags) if details.enable }
+  gcp_connectors    = { for name, details in var.harness_platform_gcp_connectors : name => merge(details, local.common_tags) if details.enable }
 }
 
 # k8s connectors
@@ -108,6 +133,7 @@ locals {
 
 # seed pipelines
 locals {
+  d = local.seed_pipeline.custom_template.pipeline.vars.delegate_ref
   seed_pipelines = { for org, values in var.harness_platform_organizations : "harness_seed_setup_${values.short_name}" => {
     pipeline = merge(
       { for key, value in local.seed_pipeline : key => value if key != "custom_template" },
@@ -122,6 +148,8 @@ locals {
             tf_provision_identifier = "tf_${org}"
             tf_backend_prefix       = org
             git_connector_ref       = module.bootstrap_harness_connectors.connectors.github_connectors["${values.short_name}${local.git_suffix}"].identifier
+            docker_ref              = module.bootstrap_harness_connectors.connectors.docker_connectors["${values.short_name}${local.docker_suffix}"].identifier
+            k8s_connector_ref       = module.bootstrap_harness_connectors.connectors.k8s_connectors["${local.d}${local.k8s_suffix}"].identifier
           }
         )
     })
@@ -160,3 +188,33 @@ locals {
     local.devsecops_pipelines
   )
 }
+
+# OPA policies 
+# locals {
+#   policies_files = merge([for key, set in var.harness_opa_policies :
+#     {
+#       for policy, value in set.policies : policy => "${path.root}/${value.file}" if value.enable
+#     } if set.enable
+#   ]...)
+
+#   policies = merge([for key, set in var.harness_opa_policies :
+#     {
+#       for policy, value in set.policies : policy =>
+#       {
+#         request_type = "POST"
+#         content_type = "json"
+#         endpoint     = set.level == "account" ? "${var.harness_policy_api_endpoint}?${local.account_args}" : "${var.harness_policy_api_endpoint}?${local.organization_args}"
+#         content = jsonencode({
+#           "identifier" : "${lower(replace(policy, "/[\\s-.]/", "_"))}_${random_string.suffix.id}",
+#           "name" : set.level == "account" ? policy : "${var.organization_prefix}_${policy}",
+#           "rego" : tostring(file("${path.root}/${value.file}")),
+#         })
+#       } if value.enable
+#     } if set.enable
+#   ]...)
+
+#   policysets = { for key, value in var.harness_opa_policies : key => {
+
+#     }
+#   }
+# }

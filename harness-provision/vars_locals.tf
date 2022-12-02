@@ -67,7 +67,7 @@ locals {
 # seed pipeline
 locals {
   account_k8s = local.seed_pipeline.custom_template.pipeline.vars.delegate_ref
-  seed_pipeline = { for org, values in var.harness_platform_organizations : "harness_seed_setup_${values.short_name}" => {
+  seed_pipe = { for org, values in var.harness_platform_organizations : "harness_seed_setup_${values.short_name}" => {
     pipeline = merge(
       { for key, value in local.seed_pipeline : key => value if key != "custom_template" },
       local.seed_pipeline.custom_template.pipeline,
@@ -117,7 +117,7 @@ locals {
 
 # pipelines
 locals {
-  pipelines = merge(local.seed_pipeline, local.devsecops_pipelines)
+  pipelines = merge(local.seed_pipe, local.devsecops_pipelines)
 }
 
 # OPA policies 

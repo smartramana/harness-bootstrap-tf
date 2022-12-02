@@ -7,6 +7,8 @@ harness_platform_delegates = {
       platform     = "gcp"
       os           = "linux"
     }
+  }
+  docker = {
     "cristian-delegate-docker" = {
       enable       = false
       auto_install = false

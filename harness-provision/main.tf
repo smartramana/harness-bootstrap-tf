@@ -34,6 +34,17 @@ module "bootstrap_harness_connectors" {
   harness_platform_k8s_connectors    = local.k8s_connectors
   harness_platform_docker_connectors = local.docker_connectors
   harness_platform_aws_connectors    = local.aws_connectors
+  harness_platform_gcp_connectors    = local.aws_connectors
+}
+
+# # Creates Policies
+module "bootstrap_harness_policies" {
+  depends_on = [
+    module.bootstrap_harness_account,
+  ]
+  source                   = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-raw?ref=main"
+  harness_raw_request      = local.policies
+  harness_platform_api_key = var.harness_platform_api_key
 }
 
 # Creates Pipeline Templates
@@ -48,21 +59,4 @@ module "bootstrap_harness_pipelines" {
   source                     = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-pipeline?ref=main"
   suffix                     = random_string.suffix.id
   harness_platform_pipelines = local.pipelines
-}
-
-# Outputs
-output "organizations" {
-  value = module.bootstrap_harness_account.organization
-}
-output "delegates" {
-  value = module.bootstrap_harness_delegates.manifests
-}
-output "connectors" {
-  value = module.bootstrap_harness_connectors.connectors
-}
-output "pipelines" {
-  value = module.bootstrap_harness_pipelines.pipelines
-}
-output "inputsets" {
-  value = module.bootstrap_harness_pipelines.inputsets
 }

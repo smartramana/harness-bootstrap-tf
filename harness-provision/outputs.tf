@@ -14,6 +14,7 @@ output "pipelines" {
 output "inputsets" {
   value = module.bootstrap_harness_pipelines.inputsets
 }
-output "policies" {
-  value = { for key, value in local.policies : key => { identifier = lookup(jsondecode(value.content), "identifier", "null") } }
-}
+# output "policies" {
+#   value = { for key, value in local.policies : key => { identifier = lookup(jsondecode(value.content), "identifier", "null") } }
+# }
+

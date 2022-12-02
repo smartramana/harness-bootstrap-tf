@@ -37,13 +37,13 @@ module "bootstrap_harness_connectors" {
   harness_platform_gcp_connectors    = local.aws_connectors
 }
 
-# # Creates Policies
+# Creates Policies
 module "bootstrap_harness_policies" {
   depends_on = [
     module.bootstrap_harness_account,
   ]
   source                   = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-raw?ref=main"
-  harness_raw_request      = local.policies
+  harness_raw_request      = {}
   harness_platform_api_key = var.harness_platform_api_key
 }
 

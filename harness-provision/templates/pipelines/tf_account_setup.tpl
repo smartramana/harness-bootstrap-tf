@@ -311,7 +311,7 @@ pipeline:
                     image: hashicorp/terraform
                     shell: Sh
                     command: |-
-                      cd provision
+                      cd harness-provision
 
                       terraform validate
                   failureStrategies:
@@ -360,34 +360,46 @@ pipeline:
                               spec:
                                 content: |-
                                   bucket = "<+stage.variables.tf_backend_bucket>"
-                                  key = "<+stage.variables.tf_backend_prefix>"
-                                  region = "<+stage.variables.tf_backend_region>"
+                                  prefix = "<+stage.variables.tf_backend_prefix>"
                             environmentVariables:
-                              - name: AWS_ACCESS_KEY_ID
-                                value: <+stage.variables.tf_access_key>
+                              - name: HARNESS_ACCOUNT_ID
+                                value: <+stage.variables.harness_account_id>
                                 type: String
-                              - name: AWS_SECRET_ACCESS_KEY
-                                value: <+stage.variables.tf_secret_key>
+                              - name: HARNESS_PLATFORM_API_KEY
+                                value: <+stage.variables.harness_api_key>
+                                type: String
+                              - name: HARNESS_ENDPOINT
+                                value: <+stage.variables.harness_endpoint>
+                                type: String
+                              - name: GOOGLE_BACKEND_CREDENTIALS
+                                value: <+stage.variables.tf_gcp_keys>
                                 type: String
                             varFiles:
                               - varFile:
                                   type: Remote
-                                  identifier: vars
+                                  identifier: tf_remote_seed_lab
                                   spec:
                                     store:
                                       type: Github
                                       spec:
                                         gitFetchType: Branch
-                                        repoName: <+stage.variables.tf_repo_name>
+                                        repoName: ""
                                         branch: <+stage.variables.tf_branch>
                                         paths:
                                           - tfvars/<+stage.variables.tf_workspace>/account.tfvars
-                                          - tfvars/<+stage.variables.tf_workspace>/k8s.tfvars
-                                          - tfvars/<+stage.variables.tf_workspace>/vpc.tfvars
+                                          - tfvars/<+stage.variables.tf_workspace>/connectors.tfvars
+                                          - tfvars/<+stage.variables.tf_workspace>/delegates.tfvars
+                                          - tfvars/<+stage.variables.tf_workspace>/pipelines.tfvars
                                         connectorRef: ${git_connector_ref}
+                              - varFile:
+                                  identifier: vars
+                                  spec:
+                                    content: harness_platform_api_key = "<+stage.variables.harness_api_key>"
+                                  type: Inline
                             exportTerraformPlanJson: true
                           provisionerIdentifier: <+stage.variables.tf_workspace>
                         timeout: 10m
+                        failureStrategies: []
                     - step:
                         type: ShellScript
                         name: Export Plan
@@ -398,7 +410,7 @@ pipeline:
                           source:
                             type: Inline
                             spec:
-                              script: tfplan=$(cat <+execution.steps.Terraform_Deployment.steps.TF_Plan.plan.jsonFilePath>)
+                              script: tfplan=$(cat <+execution.steps.Terraform_Plan.steps.TF_Plan.plan.jsonFilePath>)
                           environmentVariables: []
                           outputVariables:
                             - name: tfplan
@@ -411,7 +423,7 @@ pipeline:
                         identifier: Terraform_Compliance_Check
                         spec:
                           policySets:
-                            - TF_policies
+                            - account.Terraform_Compliance
                           type: Custom
                           policySpec:
                             payload: <+pipeline.stages.Provisioning.spec.execution.steps.Terraform_Plan.steps.Export_Plan.output.outputVariables.tfplan>
@@ -502,10 +514,6 @@ pipeline:
         tags: {}
         failureStrategies: []
         variables:
-          - name: tf_repo_name
-            type: String
-            description: ""
-            value: <+input>
           - name: tf_branch
             type: String
             description: ""
@@ -526,22 +534,26 @@ pipeline:
             type: String
             description: ""
             value: <+input>
-          - name: tf_backend_region
-            type: String
-            description: ""
-            value: <+input>
-          - name: tf_access_key
+          - name: tf_gcp_keys
             type: Secret
             description: ""
-            value: account.cristian_aws_access_key
-          - name: tf_secret_key
-            type: Secret
-            description: ""
-            value: account.cristian_aws_secret_key
+            value: account.Cristian_GOOGLE_BACKEND_CREDENTIALS
           - name: tf_action
             type: String
             description: ""
             value: <+input>
+          - name: harness_api_key
+            type: Secret
+            description: ""
+            value: account.cristian_harness_platform_api_key
+          - name: harness_account_id
+            type: String
+            description: ""
+            value: Io9SR1H7TtGBq9LVyJVB2w
+          - name: harness_endpoint
+            type: String
+            description: ""
+            value: https://app.harness.io/gateway
   properties:
     ci:
       codebase:

@@ -133,7 +133,7 @@ locals {
 
 # seed pipelines
 locals {
-  d = local.seed_pipeline.custom_template.pipeline.vars.delegate_ref
+  account_k8s = local.seed_pipeline.custom_template.pipeline.vars.delegate_ref
   seed_pipelines = { for org, values in var.harness_platform_organizations : "harness_seed_setup_${values.short_name}" => {
     pipeline = merge(
       { for key, value in local.seed_pipeline : key => value if key != "custom_template" },
@@ -149,7 +149,8 @@ locals {
             tf_backend_prefix       = org
             git_connector_ref       = module.bootstrap_harness_connectors.connectors.github_connectors["${values.short_name}${local.git_suffix}"].identifier
             docker_ref              = module.bootstrap_harness_connectors.connectors.docker_connectors["${values.short_name}${local.docker_suffix}"].identifier
-            k8s_connector_ref       = module.bootstrap_harness_connectors.connectors.k8s_connectors["${local.d}${local.k8s_suffix}"].identifier
+            k8s_connector_ref       = module.bootstrap_harness_connectors.connectors.k8s_connectors["${local.account_k8s}${local.k8s_suffix}"].identifier
+            git_repo_ref            = values.git_repo
           }
         )
     })

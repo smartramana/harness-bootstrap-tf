@@ -9,7 +9,6 @@ harness_platform_pipelines = {
         vars = {
           approver_ref = "account.SE_Admin"
           delegate_ref = "cristian-delegate-tf"
-          git_repo_ref = "harness-bootstrap-tf"
         }
       }
       inputset = {

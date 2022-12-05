@@ -37,7 +37,7 @@ module "bootstrap_harness_connectors" {
   suffix = random_string.suffix.id
   tags   = local.common_tags.tags
 
-  harness_platform_github_connectors = var.harness_platform_github_connectors
+  harness_platform_github_connectors = local.github_connectors
   harness_platform_docker_connectors = var.harness_platform_docker_connectors
   harness_platform_aws_connectors    = var.harness_platform_aws_connectors
   harness_platform_gcp_connectors    = var.harness_platform_gcp_connectors

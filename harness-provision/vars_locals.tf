@@ -12,6 +12,14 @@ locals {
   }
 }
 
+# github connectors
+locals {
+  github_connectors = { for key, value in var.harness_platform_github_connectors : key => merge(value, {
+    org_id     = can(value.org_id) ? module.bootstrap_harness_account.organization[value.org_id].org_id : ""
+    project_id = can(value.project_id) ? module.bootstrap_harness_account.organization[value.org_id].seed_project_id : ""
+  }) }
+}
+
 # seed pipeline
 locals {
   seed_pipeline = var.harness_platform_pipelines["harness_seed_setup"]

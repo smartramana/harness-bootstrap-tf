@@ -5,7 +5,7 @@ harness_platform_delegates = {
       enable           = true
       auto_install     = true
       create_connector = false
-      connector_id     = "account.cristian_delegate_tf_k8s_connector"
+      connector_id     = "account.cristian_delegate_tf_k8s_connector_ar6o"
       platform         = "gcp"
       os               = "linux"
     }

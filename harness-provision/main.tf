@@ -33,11 +33,9 @@ module "bootstrap_harness_connectors" {
   depends_on = [
     module.bootstrap_harness_account,
   ]
-  source     = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-connectors?ref=main"
-  suffix     = random_string.suffix.id
-  org_id     = local.common_schema.org_id
-  project_id = local.common_schema.project_id
-  tags       = local.common_tags.tags
+  source = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-connectors?ref=main"
+  suffix = random_string.suffix.id
+  tags   = local.common_tags.tags
 
   harness_platform_github_connectors = var.harness_platform_github_connectors
   harness_platform_docker_connectors = var.harness_platform_docker_connectors

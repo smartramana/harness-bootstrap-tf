@@ -2,10 +2,12 @@
 harness_platform_delegates = {
   k8s = {
     "cristian-delegate-tf" = {
-      enable       = true
-      auto_install = true
-      platform     = "gcp"
-      os           = "linux"
+      enable           = true
+      auto_install     = true
+      create_connector = false
+      connector_id     = "account.cristian-delegate-tf_k8s_connector"
+      platform         = "gcp"
+      os               = "linux"
     }
   }
   docker = {

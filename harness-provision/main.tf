@@ -6,20 +6,25 @@ module "bootstrap_harness_account" {
 }
 
 # Creates and uploads delegates manifests to Harness FileStore: => Account/Org/File
+# Configures delegates at Account Level
 # TODO: Auto Install delegates
 module "bootstrap_harness_delegates" {
   depends_on = [
-    module.bootstrap_harness_account,
+    module.bootstrap_harness_account
   ]
-  source = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-delegate?ref=main"
-  suffix = random_string.suffix.id
 
-  harness_platform_delegates = local.delegates
+  source                     = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-delegate?ref=main"
+  suffix                     = random_string.suffix.id
   harness_platform_api_key   = var.harness_platform_api_key
   harness_account_id         = var.harness_platform_account_id
-  harness_organization       = module.bootstrap_harness_account.organization[var.organization_prefix]
+  harness_platform_delegates = var.harness_platform_delegates
+  tags                       = local.common_tags.tags
 
-  enable_delegate_init_service = true
+  delegate_init_service = {
+    enable     = true
+    org_id     = local.common_schema.org_id
+    project_id = local.common_schema.project_id
+  }
 }
 
 # Creates and Setup Harness connectors
@@ -28,13 +33,16 @@ module "bootstrap_harness_connectors" {
   depends_on = [
     module.bootstrap_harness_account,
   ]
-  source                             = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-connectors?ref=main"
-  suffix                             = random_string.suffix.id
-  harness_platform_github_connectors = local.github_connectors
-  harness_platform_k8s_connectors    = local.k8s_connectors
-  harness_platform_docker_connectors = local.docker_connectors
-  harness_platform_aws_connectors    = local.aws_connectors
-  harness_platform_gcp_connectors    = local.gcp_connectors
+  source     = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-connectors?ref=main"
+  suffix     = random_string.suffix.id
+  org_id     = local.common_schema.org_id
+  project_id = local.common_schema.project_id
+  tags       = local.common_tags.tags
+
+  harness_platform_github_connectors = var.harness_platform_github_connectors
+  harness_platform_docker_connectors = var.harness_platform_docker_connectors
+  harness_platform_aws_connectors    = var.harness_platform_aws_connectors
+  harness_platform_gcp_connectors    = var.harness_platform_gcp_connectors
 }
 
 # Creates Policies

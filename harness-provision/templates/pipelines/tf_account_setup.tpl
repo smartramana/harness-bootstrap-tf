@@ -1,6 +1,6 @@
 pipeline:
   name: ${name}
-  identifier: ${name}_${suffix}
+  identifier: ${identifier}
   projectIdentifier: ${project_id}
   orgIdentifier: ${org_id}
   tags: {}

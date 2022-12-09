@@ -1,17 +1,24 @@
 # DELEGATES
 harness_platform_delegates = {
   k8s = {
-    "cristian-delegate-tf" = {
+    "cristian_delegate_tf" = {
       enable           = true
-      auto_install     = true
-      create_connector = false
-      connector_id     = "account.cristian_delegate_tf_k8s_connector_ar6o"
+      auto_install     = false
+      create_connector = true
+      #connector_id     = "account.cristian_delegate_tf_k8s_connector_ar6o"
+      platform = "gcp"
+      os       = "linux"
+    }
+    "devsecops_delegate_tf" = {
+      enable           = true
+      auto_install     = false
+      create_connector = true
       platform         = "gcp"
       os               = "linux"
     }
   }
   docker = {
-    "cristian-delegate-docker" = {
+    "cristian_delegate_docker" = {
       enable       = false
       auto_install = false
       platform     = "aws"

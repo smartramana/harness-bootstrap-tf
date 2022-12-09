@@ -1,5 +1,5 @@
 inputSet:
-  identifier: ${name}_${suffix}
+  identifier: ${identifier}
   name: ${name}
   tags: {}
   projectIdentifier: ${project_id}

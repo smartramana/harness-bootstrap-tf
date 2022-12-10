@@ -22,38 +22,67 @@ pipeline:
             infrastructureDefinition:
               type: KubernetesDirect
               spec:
-                connectorRef: <+stage.variables.connector_ref>
+                connectorRef: <+stage.variables.k8s_connector_id>
                 namespace: harness-delegate-ng
                 releaseName: release-<+INFRA_KEY>
             allowSimultaneousDeployments: false
           execution:
             steps:
-              - step:
-                  type: ShellScript
-                  name: Update Linux Dependencies
-                  identifier: Update_Linux_Dependencies
-                  spec:
-                    shell: Bash
-                    onDelegate: true
-                    source:
-                      type: Inline
+              - parallel:
+                  - step:
+                      type: ShellScript
+                      name: Update Ubuntu Distro Dependencies
+                      identifier: Update_Linux_Dependencies
                       spec:
-                        script: |-
-                          echo "update linux dependencies"
+                        shell: Bash
+                        onDelegate: true
+                        source:
+                          type: Inline
+                          spec:
+                            script: |-
+                              echo "update linux dependencies"
 
-                          export DEBIAN_FRONTEND=noninteractive
+                              export DEBIAN_FRONTEND=noninteractive
 
-                          apt-get update
-                          apt-get install -y \
-                              gnupg \
-                              software-properties-common \
-                              curl \
-                              git
-                    environmentVariables: []
-                    outputVariables: []
-                    delegateSelectors:
-                      - <+stage.variables.delegate_ref>
-                  timeout: 10m
+                              apt-get update
+                              apt-get install -y \
+                                  gnupg \
+                                  software-properties-common \
+                                  curl \
+                                  git
+                        environmentVariables: []
+                        outputVariables: []
+                        delegateSelectors:
+                          - <+stage.variables.delegate_name>
+                      timeout: 10m
+                      when:
+                        stageStatus: Success
+                        condition: <+stage.variables.os_linux_distro> == "ubuntu"
+                      failureStrategies: []
+                  - step:
+                      type: ShellScript
+                      name: Update Centos Distro Dependencies
+                      identifier: Update_Centos_linux_Distro_Dependencies
+                      spec:
+                        shell: Bash
+                        onDelegate: true
+                        source:
+                          type: Inline
+                          spec:
+                            script: |-
+                              microdnf install unzip
+                              microdnf install wget
+                              microdnf install curl
+                              microdnf install git
+                        environmentVariables: []
+                        outputVariables: []
+                        delegateSelectors:
+                          - <+stage.variables.delegate_name>
+                      timeout: 10m
+                      when:
+                        stageStatus: Success
+                        condition: <+stage.variables.os_linux_distro> == "centos"
+                      failureStrategies: []
               - stepGroup:
                   name: Terraform Ecosystem
                   identifier: Terraform_Ecosystem
@@ -112,12 +141,41 @@ pipeline:
                               environmentVariables: []
                               outputVariables: []
                             timeout: 10m
+                    - parallel:
+                        - step:
+                            type: ShellScript
+                            name: Terraform Version
+                            identifier: Terraform_Version
+                            spec:
+                              shell: Bash
+                              onDelegate: true
+                              source:
+                                type: Inline
+                                spec:
+                                  script: terraform version
+                              environmentVariables: []
+                              outputVariables: []
+                            timeout: 10m
+                        - step:
+                            type: ShellScript
+                            name: Infracost Version
+                            identifier: ShellScript
+                            spec:
+                              shell: Bash
+                              onDelegate: true
+                              source:
+                                type: Inline
+                                spec:
+                                  script: infracost -v
+                              environmentVariables: []
+                              outputVariables: []
+                            timeout: 10m
                   when:
                     stageStatus: Success
                     condition: <+stage.variables.enable_terraform> == "true"
                   failureStrategies: []
                   delegateSelectors:
-                    - <+stage.variables.delegate_ref>
+                    - <+stage.variables.delegate_name>
               - stepGroup:
                   name: GCP Ecosystem
                   identifier: GCP_Ecosystem
@@ -158,7 +216,7 @@ pipeline:
                     condition: <+stage.variables.enable_gcloud> == "true"
                   failureStrategies: []
                   delegateSelectors:
-                    - <+stage.variables.delegate_ref>
+                    - <+stage.variables.delegate_name>
             rollbackSteps: []
         tags: {}
         failureStrategies:
@@ -172,11 +230,11 @@ pipeline:
             type: String
             description: ""
             value: 1.3.5
-          - name: connector_ref
+          - name: k8s_connector_id
             type: String
             description: ""
             value: <+input>
-          - name: delegate_ref
+          - name: delegate_name
             type: String
             description: ""
             value: <+input>
@@ -185,6 +243,10 @@ pipeline:
             description: ""
             value: <+input>
           - name: enable_gcloud
+            type: String
+            description: ""
+            value: <+input>
+          - name: os_linux_distro
             type: String
             description: ""
             value: <+input>

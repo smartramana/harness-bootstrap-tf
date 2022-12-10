@@ -2,6 +2,7 @@
 module "bootstrap_harness_account" {
   source                         = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-project?ref=main"
   suffix                         = random_string.suffix.id
+  tags                           = local.common_tags.tags
   harness_platform_organizations = var.harness_platform_organizations
 }
 
@@ -12,34 +13,29 @@ module "bootstrap_harness_delegates" {
   depends_on = [
     module.bootstrap_harness_account
   ]
+  source = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-delegate?ref=main"
 
-  source                     = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-delegate?ref=main"
-  suffix                     = random_string.suffix.id
+  suffix                = random_string.suffix.id
+  tags                  = local.common_tags.tags
+  delegate_init_service = local.delegate_init_service
+
   harness_platform_api_key   = var.harness_platform_api_key
   harness_account_id         = var.harness_platform_account_id
   harness_platform_delegates = var.harness_platform_delegates
-  tags                       = local.common_tags.tags
-
-  delegate_init_service = {
-    enable     = true
-    org_id     = local.common_schema.org_id
-    project_id = local.common_schema.project_id
-  }
 }
 
 # Creates and Setup Harness connectors
 # TODO: Add GCP, Azure and CCM connectors
 module "bootstrap_harness_connectors" {
   depends_on = [
-    module.bootstrap_harness_account,
+    module.bootstrap_harness_account
   ]
-  source     = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-connectors?ref=main"
-  suffix     = random_string.suffix.id
-  org_id     = local.common_schema.org_id
-  project_id = local.common_schema.project_id
-  tags       = local.common_tags.tags
+  source = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-connectors?ref=main"
 
-  harness_platform_github_connectors = var.harness_platform_github_connectors
+  suffix                             = random_string.suffix.id
+  tags                               = local.common_tags.tags
+  harness_platform_github_connectors = local.github_connectors
+
   harness_platform_docker_connectors = var.harness_platform_docker_connectors
   harness_platform_aws_connectors    = var.harness_platform_aws_connectors
   harness_platform_gcp_connectors    = var.harness_platform_gcp_connectors
@@ -48,11 +44,12 @@ module "bootstrap_harness_connectors" {
 # Creates Policies
 module "bootstrap_harness_policies" {
   depends_on = [
-    module.bootstrap_harness_account,
+    module.bootstrap_harness_account
   ]
-  source                   = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-raw?ref=main"
-  harness_raw_request      = {}
+  source = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-raw?ref=main"
+
   harness_platform_api_key = var.harness_platform_api_key
+  harness_raw_request      = {}
 }
 
 # Creates Pipeline Templates
@@ -62,9 +59,11 @@ module "bootstrap_harness_policies" {
 # # Creates Pipelines
 module "bootstrap_harness_pipelines" {
   depends_on = [
-    module.bootstrap_harness_account,
+    module.bootstrap_harness_account
   ]
-  source                     = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-pipeline?ref=main"
+  source = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-pipeline?ref=main"
+
   suffix                     = random_string.suffix.id
+  tags                       = local.common_tags.tags
   harness_platform_pipelines = local.pipelines
 }

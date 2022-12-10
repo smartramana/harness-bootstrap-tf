@@ -1,7 +1,7 @@
 # common vars
 locals {
   delegate_init_service = length(var.harness_platform_delegates) > 0 ? {
-    enable     = true
+    enable     = local.enable_seed_pipeline
     org_id     = local.common_schema.org_id
     project_id = local.common_schema.project_id
     } : {

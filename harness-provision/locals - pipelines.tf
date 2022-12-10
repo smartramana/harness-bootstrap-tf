@@ -22,7 +22,7 @@ locals {
               git_repo_ref      = var.harness_platform_organizations[var.organization_prefix].git_repo
               git_connector_ref = module.bootstrap_harness_connectors.connectors.github_connectors[local.organization_short_name].identifier
               docker_ref        = module.bootstrap_harness_connectors.connectors.docker_connectors[local.organization_short_name].identifier
-              k8s_connector_ref = module.bootstrap_harness_delegates.manifests["default"][var.harness_platform_organizations[var.organization_prefix].delegate_ref].k8s_connector.identifier
+              k8s_connector_ref = module.bootstrap_harness_delegates.manifests["account"][var.harness_platform_organizations[var.organization_prefix].delegate_ref].k8s_connector.identifier
             }
           )
       })

@@ -28,32 +28,61 @@ pipeline:
             allowSimultaneousDeployments: false
           execution:
             steps:
-              - step:
-                  type: ShellScript
-                  name: Update Linux Dependencies
-                  identifier: Update_Linux_Dependencies
-                  spec:
-                    shell: Bash
-                    onDelegate: true
-                    source:
-                      type: Inline
+              - parallel:
+                  - step:
+                      type: ShellScript
+                      name: Update Ubuntu Distro Dependencies
+                      identifier: Update_Linux_Dependencies
                       spec:
-                        script: |-
-                          echo "update linux dependencies"
+                        shell: Bash
+                        onDelegate: true
+                        source:
+                          type: Inline
+                          spec:
+                            script: |-
+                              echo "update linux dependencies"
 
-                          export DEBIAN_FRONTEND=noninteractive
+                              export DEBIAN_FRONTEND=noninteractive
 
-                          apt-get update
-                          apt-get install -y \
-                              gnupg \
-                              software-properties-common \
-                              curl \
-                              git
-                    environmentVariables: []
-                    outputVariables: []
-                    delegateSelectors:
-                      - <+stage.variables.delegate_ref>
-                  timeout: 10m
+                              apt-get update
+                              apt-get install -y \
+                                  gnupg \
+                                  software-properties-common \
+                                  curl \
+                                  git
+                        environmentVariables: []
+                        outputVariables: []
+                        delegateSelectors:
+                          - <+stage.variables.delegate_ref>
+                      timeout: 10m
+                      when:
+                        stageStatus: Success
+                        condition: <+stage.variables.distro> == "ubuntu"
+                      failureStrategies: []
+                  - step:
+                      type: ShellScript
+                      name: Update Centos Distro Dependencies
+                      identifier: Update_Centos_Distro_Dependencies
+                      spec:
+                        shell: Bash
+                        onDelegate: true
+                        source:
+                          type: Inline
+                          spec:
+                            script: |-
+                              microdnf install unzip
+                              microdnf install wget
+                              microdnf install curl
+                              microdnf install git
+                        environmentVariables: []
+                        outputVariables: []
+                        delegateSelectors:
+                          - <+stage.variables.delegate_ref>
+                      timeout: 10m
+                      when:
+                        stageStatus: Success
+                        condition: <+stage.variables.distro> == "centos"
+                      failureStrategies: []
               - stepGroup:
                   name: Terraform Ecosystem
                   identifier: Terraform_Ecosystem

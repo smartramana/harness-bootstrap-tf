@@ -18,7 +18,10 @@ trigger:
           autoAbortPreviousExecutions: true
           payloadConditions: []
           headerConditions: []
-          actions: []
+          actions:
+            - Open
+            - Reopen
+            - Synchronize
   inputYaml: |
     pipeline:
       identifier: ${pipeline_id}

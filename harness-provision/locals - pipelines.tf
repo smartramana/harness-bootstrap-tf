@@ -17,7 +17,7 @@ locals {
             {
               tags              = concat(local.common_tags.tags, local.seed_structure.tags)
               identifier        = "${local.pipeline_seed_name}_${random_string.suffix.id}"
-              tf_backend_prefix = "tf_${var.organization_prefix}"
+              tf_backend_prefix = var.organization_prefix
               delegate_ref      = var.harness_platform_organizations[var.organization_prefix].delegate_ref
               git_repo_ref      = var.harness_platform_organizations[var.organization_prefix].git_repo
               git_connector_ref = module.bootstrap_harness_connectors.connectors.github_connectors[local.organization_short_name].identifier

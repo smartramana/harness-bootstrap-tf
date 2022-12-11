@@ -1,7 +1,7 @@
 # seed pipeline
 locals {
   seed_name            = "harness_seed_setup"
-  seed_structure       = local.enable_seed_pipeline ? merge(var.harness_platform_pipelines[local.seed_name]) : {}
+  seed_structure       = try(var.harness_platform_pipelines[local.seed_name], {})
   pipeline_seed_name   = "${local.seed_name}_${var.organization_prefix}"
   enable_seed_pipeline = var.harness_platform_organizations[var.organization_prefix].enable
 

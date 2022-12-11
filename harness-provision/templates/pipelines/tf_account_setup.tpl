@@ -453,50 +453,48 @@ pipeline:
                   name: Terraform Execution
                   identifier: Terraform_Deployment
                   steps:
-                    - parallel:
-                        - step:
-                            type: TerraformApply
-                            name: TF Apply
-                            identifier: TF_Apply
-                            spec:
-                              configuration:
-                                type: InheritFromPlan
-                              provisionerIdentifier: <+stage.variables.tf_workspace>
-                            timeout: 1h
-                            when:
-                              stageStatus: Success
-                              condition: <+stage.variables.tf_action> == "apply"
-                            failureStrategies: []
-                        - step:
-                            type: TerraformDestroy
-                            name: TF Destroy
-                            identifier: TF_D
-                            spec:
-                              configuration:
-                                type: InheritFromPlan
-                              provisionerIdentifier: <+stage.variables.tf_workspace>
-                            timeout: 50m
-                            when:
-                              stageStatus: Success
-                              condition: <+stage.variables.tf_action> == "destroy"
-                            failureStrategies:
-                              - onFailure:
-                                  errors:
-                                    - AllErrors
-                                  action:
-                                    type: Retry
-                                    spec:
-                                      retryCount: 1
-                                      onRetryFailure:
-                                        action:
-                                          type: ManualIntervention
-                                          spec:
-                                            timeout: 30m
-                                            onTimeout:
-                                              action:
-                                                type: Abort
-                                      retryIntervals:
-                                        - 1m
+                    - step:
+                        type: TerraformApply
+                        name: TF Apply
+                        identifier: TF_Apply
+                        spec:
+                          configuration:
+                            type: InheritFromPlan
+                          provisionerIdentifier: <+stage.variables.tf_workspace>
+                        timeout: 1h
+                        when:
+                          stageStatus: Success
+                        failureStrategies: []
+                    - step:
+                        type: TerraformDestroy
+                        name: TF Destroy
+                        identifier: TF_D
+                        spec:
+                          configuration:
+                            type: InheritFromApply
+                          provisionerIdentifier: <+stage.variables.tf_workspace>
+                        timeout: 50m
+                        when:
+                          stageStatus: Success
+                          condition: <+stage.variables.tf_action> == "destroy"
+                        failureStrategies:
+                          - onFailure:
+                              errors:
+                                - AllErrors
+                              action:
+                                type: Retry
+                                spec:
+                                  retryCount: 1
+                                  onRetryFailure:
+                                    action:
+                                      type: ManualIntervention
+                                      spec:
+                                        timeout: 30m
+                                        onTimeout:
+                                          action:
+                                            type: Abort
+                                  retryIntervals:
+                                    - 1m
                     - step:
                         type: TerraformRollback
                         name: TF Rollback

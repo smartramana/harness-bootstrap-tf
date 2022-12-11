@@ -2,9 +2,9 @@
 harness_platform_delegates = {
   k8s = {
     "cristian-delegate-tf" = {
-      enable           = true
+      enable           = false
       auto_install     = false
-      create_connector = true
+      create_connector = false
       tokenName        = "default"
       #connector_id     = "account.cristian_delegate_tf_k8s_connector_ar6o"
       platform = "gcp"

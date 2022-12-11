@@ -10,5 +10,7 @@ locals {
     project_id = ""
   }
 
-  delegate_selectors = [var.harness_platform_organizations[var.organization_prefix].delegate_ref]
+  delegate_account_ref = var.remote_state.enable ? element(keys(local.remote_state.delegates.account), 0) : ""
+  delegate_selectors   = var.remote_state.enable ? [local.delegate_account_ref] : [var.harness_platform_organizations[var.organization_prefix].delegate_ref]
+  delegate_ref         = try(var.harness_platform_organizations[var.organization_prefix].delegate_ref, local.delegate_account_ref)
 }

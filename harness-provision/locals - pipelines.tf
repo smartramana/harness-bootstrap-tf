@@ -17,12 +17,12 @@ locals {
             {
               tags              = concat(local.common_tags.tags, local.seed_structure.tags)
               identifier        = "${local.pipeline_seed_name}_${random_string.suffix.id}"
-              tf_backend_prefix = var.organization_prefix
-              delegate_ref      = var.harness_platform_organizations[var.organization_prefix].delegate_ref
+              delegate_ref      = local.delegate_ref
+              k8s_connector_ref = local.k8s_connector_ref
+              docker_ref        = local.docker_connector_ref
+              git_connector_ref = local.github_connector_ref
               git_repo_ref      = var.harness_platform_organizations[var.organization_prefix].git_repo
-              git_connector_ref = module.bootstrap_harness_connectors.connectors.github_connectors[local.organization_short_name].identifier
-              docker_ref        = module.bootstrap_harness_connectors.connectors.docker_connectors[local.organization_short_name].identifier
-              k8s_connector_ref = module.bootstrap_harness_delegates.manifests["account"][var.harness_platform_organizations[var.organization_prefix].delegate_ref].k8s_connector.identifier
+              tf_backend_prefix = var.organization_prefix
             }
           )
       })

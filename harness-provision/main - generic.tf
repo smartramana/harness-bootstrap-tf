@@ -4,7 +4,7 @@ resource "random_string" "suffix" {
   lower   = true
 }
 
-data "terraform_remote_state" "harness" {
+data "terraform_remote_state" "remote" {
   count     = var.remote_state.enable ? 1 : 0
   backend   = var.remote_state.backend
   workspace = var.remote_state.workspace

@@ -9,4 +9,6 @@ locals {
     org_id     = ""
     project_id = ""
   }
+
+  delegate_selectors = [var.harness_platform_organizations[var.organization_prefix].delegate_ref]
 }

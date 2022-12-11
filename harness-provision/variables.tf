@@ -1,7 +1,7 @@
 # harness variables
 variable "harness_platform_api_key" {
-  type      = string
-  sensitive = true
+  type = string
+  #sensitive = true
 }
 variable "harness_platform_account_id" {
   type = string

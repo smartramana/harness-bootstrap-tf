@@ -2,18 +2,18 @@
 harness_platform_delegates = {
   k8s = {
     "cristian-delegate-tf" = {
-      enable           = true
+      enable           = false
       auto_install     = false
-      create_connector = true
+      create_connector = false
       tokenName        = "default"
       #connector_id     = "account.cristian_delegate_tf_k8s_connector_ar6o"
       platform = "gcp"
       os       = "linux"
     }
     "devsecops-delegate-tf" = {
-      enable           = false
+      enable           = true
       auto_install     = false
-      create_connector = false
+      create_connector = true
       tokenName        = "default"
       platform         = "gcp"
       os               = "linux"

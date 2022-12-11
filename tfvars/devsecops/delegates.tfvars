@@ -11,9 +11,9 @@ harness_platform_delegates = {
       os       = "linux"
     }
     "devsecops-delegate-tf" = {
-      enable           = true
+      enable           = false
       auto_install     = false
-      create_connector = true
+      create_connector = false
       tokenName        = "default"
       platform         = "gcp"
       os               = "linux"

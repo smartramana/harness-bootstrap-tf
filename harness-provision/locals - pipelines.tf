@@ -51,8 +51,13 @@ locals {
         )
       }
     )
-    inputset = { for input, details in try(values.custom_template.inputset, {}) : input => details if details.enable },
-    trigger  = { for t, details in try(values.custom_template.trigger, {}) : t => details if details.enable }
+    inputset = { for input, details in try(values.custom_template.inputset, {
+      vars = merge(alues.custom_template.inputset.vars, {
+        k8s_connector_ref = local.k8s_connector_ref
+        delegate_ref      = local.delegate_ref
+      })
+    }) : input => details if details.enable },
+    trigger = { for t, details in try(values.custom_template.trigger, {}) : t => details if details.enable }
     } if pipe != local.seed_name
   }
 }

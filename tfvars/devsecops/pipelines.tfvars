@@ -50,7 +50,7 @@ harness_platform_pipelines = {
         }
       }
       inputset = {
-        apply = {
+        devsecops = {
           file          = "templates/inputsets/delegate_init.tpl"
           enable        = true
           craft_request = false

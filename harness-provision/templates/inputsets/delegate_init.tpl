@@ -8,7 +8,7 @@ inputSet:
     identifier: ${pipeline_id}
     stages:
       - stage:
-          identifier: delegate_init_inputset
+          identifier: Provision_${suffix}
           type: Deployment
           variables:
             - name: k8s_connector_ref

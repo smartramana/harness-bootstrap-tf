@@ -16,7 +16,6 @@ locals {
             local.common_schema,
             {
               tags              = concat(local.common_tags.tags, local.seed_structure.tags)
-              identifier        = "${local.pipeline_seed_name}_${random_string.suffix.id}"
               delegate_ref      = local.delegate_ref
               k8s_connector_ref = local.k8s_connector_ref
               docker_ref        = local.docker_connector_ref

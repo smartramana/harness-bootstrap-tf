@@ -55,7 +55,7 @@ locals {
       details,
       {
         vars = merge(
-          details.custom_template.inputset.vars,
+          details.vars,
           {
             k8s_connector_ref = local.k8s_connector_ref
             delegate_ref      = local.delegate_ref

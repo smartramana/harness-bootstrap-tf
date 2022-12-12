@@ -9,4 +9,5 @@ locals {
     project_id = try(module.bootstrap_harness_account.organization[var.organization_prefix].seed_project_id, "")
     suffix     = try(module.bootstrap_harness_account.organization[var.organization_prefix].suffix, random_string.suffix.id)
   }
+  remote_state = try(data.terraform_remote_state.remote.0.outputs.harness, {})
 }

@@ -46,6 +46,8 @@ locals {
             git_connector_ref = module.bootstrap_harness_connectors.connectors.github_connectors[values.custom_template.pipeline.vars.git_connector].identifier
             service_ref       = module.bootstrap_harness_delegates.delegate_init.service_ref
             environment_ref   = module.bootstrap_harness_delegates.delegate_init.environment_ref
+            k8s_connector_ref = local.k8s_connector_ref
+            delegate_ref      = local.delegate_ref
           }
         )
       }

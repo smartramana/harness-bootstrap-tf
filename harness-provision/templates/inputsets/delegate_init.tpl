@@ -13,16 +13,16 @@ inputSet:
           variables:
             - name: k8s_connector_ref
               type: String
-              value: ${k8s_connector_ref}
+              value: "${k8s_connector_ref}"
             - name: delegate_ref
               type: String
-              value: ${delegate_ref}
+              value: "${delegate_ref}"
             - name: enable_terraform
               type: String
-              value: ${enable_terraform}
+              value: "${enable_terraform}"
             - name: enable_gcloud
               type: String
-              value: ${enable_gcloud}
+              value: "${enable_gcloud}"
             - name: os_linux_distro
               type: String
-              value: ${os_linux_distro}
+              value: "${os_linux_distro}"

@@ -3,7 +3,7 @@ locals {
   seed_name            = "harness_seed_setup"
   seed_structure       = try(var.harness_platform_pipelines[local.seed_name], {})
   pipeline_seed_name   = "${local.seed_name}_${var.organization_prefix}"
-  enable_seed_pipeline = var.harness_platform_organizations[var.organization_prefix].enable
+  enable_seed_pipeline = var.harness_platform_organizations[var.organization_prefix].enable && length(local.seed_structure) > 0
 
   seed_pipeline = local.enable_seed_pipeline ? {
     "${local.pipeline_seed_name}" = {
@@ -43,7 +43,7 @@ locals {
           values.custom_template.pipeline.vars,
           local.common_schema,
           {
-            tags              = concat(local.common_tags.tags, local.seed_structure.tags)
+            tags              = concat(local.common_tags.tags, values.tags)
             git_connector_ref = module.bootstrap_harness_connectors.connectors.github_connectors[values.custom_template.pipeline.vars.git_connector].identifier
             service_ref       = module.bootstrap_harness_delegates.delegate_init.service_ref
             environment_ref   = module.bootstrap_harness_delegates.delegate_init.environment_ref

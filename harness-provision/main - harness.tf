@@ -60,7 +60,8 @@ module "bootstrap_harness_policies" {
 # # Creates Pipelines
 module "bootstrap_harness_pipelines" {
   depends_on = [
-    module.bootstrap_harness_account
+    module.bootstrap_harness_account,
+    module.bootstrap_harness_delegates
   ]
   source = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-pipeline?ref=main"
 

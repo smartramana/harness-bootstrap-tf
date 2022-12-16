@@ -74,6 +74,7 @@ pipeline:
                               microdnf install wget
                               microdnf install curl
                               microdnf install git
+                              microdnf install jq
                         environmentVariables: []
                         outputVariables: []
                         delegateSelectors:

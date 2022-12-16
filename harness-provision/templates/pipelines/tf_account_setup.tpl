@@ -374,6 +374,9 @@ pipeline:
                               - name: GOOGLE_BACKEND_CREDENTIALS
                                 value: <+stage.variables.tf_gcp_keys>
                                 type: String
+                              - name: GITHUB_TOKEN
+                                value: <+stage.variables.github_token>
+                                type: String
                             varFiles:
                               - varFile:
                                   type: Remote
@@ -506,6 +509,9 @@ pipeline:
                                     - name: GOOGLE_BACKEND_CREDENTIALS
                                       value: <+stage.variables.tf_gcp_keys>
                                       type: String
+                                    - name: GITHUB_TOKEN
+                                      value: <+stage.variables.github_token>
+                                      type: String
                                   varFiles:
                                     - varFile:
                                         type: Remote
@@ -607,6 +613,10 @@ pipeline:
             type: String
             description: ""
             value: https://app.harness.io/gateway
+          - name: github_token
+            type: Secret
+            description: ""
+            value: account.crizstian_github_token
   properties:
     ci:
       codebase:

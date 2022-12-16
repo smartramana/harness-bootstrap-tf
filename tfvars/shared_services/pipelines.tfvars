@@ -8,7 +8,7 @@ harness_platform_pipelines = {
         file          = "templates/pipelines/delegate_init.tpl"
         craft_request = false
         vars = {
-          git_connector = "shared_services_lab"
+          git_connector = "shared_services"
         }
       }
       inputset = {

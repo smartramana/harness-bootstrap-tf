@@ -22,7 +22,7 @@ pipeline:
             infrastructureDefinition:
               type: KubernetesDirect
               spec:
-                connectorRef: <+stage.variables.k8s_connector_id>
+                connectorRef: <+stage.variables.k8s_connector_ref>
                 namespace: harness-delegate-ng
                 releaseName: release-<+INFRA_KEY>
             allowSimultaneousDeployments: false
@@ -53,7 +53,7 @@ pipeline:
                         environmentVariables: []
                         outputVariables: []
                         delegateSelectors:
-                          - <+stage.variables.delegate_name>
+                          - <+stage.variables.delegate_ref>
                       timeout: 10m
                       when:
                         stageStatus: Success
@@ -77,7 +77,7 @@ pipeline:
                         environmentVariables: []
                         outputVariables: []
                         delegateSelectors:
-                          - <+stage.variables.delegate_name>
+                          - <+stage.variables.delegate_ref>
                       timeout: 10m
                       when:
                         stageStatus: Success
@@ -175,7 +175,7 @@ pipeline:
                     condition: <+stage.variables.enable_terraform> == "true"
                   failureStrategies: []
                   delegateSelectors:
-                    - <+stage.variables.delegate_name>
+                    - <+stage.variables.delegate_ref>
               - stepGroup:
                   name: GCP Ecosystem
                   identifier: GCP_Ecosystem
@@ -216,7 +216,7 @@ pipeline:
                     condition: <+stage.variables.enable_gcloud> == "true"
                   failureStrategies: []
                   delegateSelectors:
-                    - <+stage.variables.delegate_name>
+                    - <+stage.variables.delegate_ref>
             rollbackSteps: []
         tags: {}
         failureStrategies:
@@ -230,11 +230,11 @@ pipeline:
             type: String
             description: ""
             value: 1.3.5
-          - name: k8s_connector_id
+          - name: k8s_connector_ref
             type: String
             description: ""
             value: <+input>
-          - name: delegate_name
+          - name: delegate_ref
             type: String
             description: ""
             value: <+input>

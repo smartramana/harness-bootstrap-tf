@@ -16,7 +16,6 @@ locals {
             local.common_schema,
             {
               tags              = concat(local.common_tags.tags, local.seed_structure.tags)
-              identifier        = "${local.pipeline_seed_name}_${random_string.suffix.id}"
               delegate_ref      = local.delegate_ref
               k8s_connector_ref = local.k8s_connector_ref
               docker_ref        = local.docker_connector_ref
@@ -47,21 +46,23 @@ locals {
             git_connector_ref = module.bootstrap_harness_connectors.connectors.github_connectors[values.custom_template.pipeline.vars.git_connector].identifier
             service_ref       = module.bootstrap_harness_delegates.delegate_init.service_ref
             environment_ref   = module.bootstrap_harness_delegates.delegate_init.environment_ref
+            k8s_connector_ref = local.k8s_connector_ref
+            delegate_ref      = local.delegate_ref
           }
         )
       }
     )
-    inputset = { for input, details in try(merge(
-      values.custom_template.inputset,
+    inputset = { for input, details in try(values.custom_template.inputset, {}) : input => merge(
+      details,
       {
         vars = merge(
-          values.custom_template.inputset.vars,
+          details.vars,
           {
             k8s_connector_ref = local.k8s_connector_ref
             delegate_ref      = local.delegate_ref
-        })
-      }
-    ), {}) : input => details if details.enable },
+          }
+      ) }
+    ) if details.enable },
     trigger = { for t, details in try(values.custom_template.trigger, {}) : t => details if details.enable }
     } if pipe != local.seed_name
   }

@@ -23,3 +23,11 @@ harness_platform_organizations = {
 }
 
 harness_opa_policies = {}
+
+github_details = {
+  enable         = true
+  branch         = "main"
+  commit_message = "Managed by Terraform"
+  commit_author  = "Terraform User"
+  commit_email   = "cristiano.rosetti@gmail.com"
+}

@@ -68,4 +68,7 @@ module "bootstrap_harness_pipelines" {
   suffix                     = random_string.suffix.id
   tags                       = local.common_tags.tags
   harness_platform_pipelines = local.pipelines
+  store_pipelines_in_git     = try(var.github_details.enable, false)
+  github_details             = var.github_details
+  organization_prefix        = var.organization_prefix
 }

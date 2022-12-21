@@ -374,6 +374,9 @@ pipeline:
                               - name: GOOGLE_BACKEND_CREDENTIALS
                                 value: <+stage.variables.tf_gcp_keys>
                                 type: String
+                              - name: GITHUB_TOKEN
+                                value: <+stage.variables.github_token>
+                                type: String
                             varFiles:
                               - varFile:
                                   type: Remote
@@ -453,48 +456,106 @@ pipeline:
                   name: Terraform Execution
                   identifier: Terraform_Deployment
                   steps:
-                    - step:
-                        type: TerraformApply
-                        name: TF Apply
-                        identifier: TF_Apply
-                        spec:
-                          configuration:
-                            type: InheritFromPlan
-                          provisionerIdentifier: <+stage.variables.tf_workspace>
-                        timeout: 1h
-                        when:
-                          stageStatus: Success
-                        failureStrategies: []
-                    - step:
-                        type: TerraformDestroy
-                        name: TF Destroy
-                        identifier: TF_D
-                        spec:
-                          configuration:
-                            type: InheritFromApply
-                          provisionerIdentifier: <+stage.variables.tf_workspace>
-                        timeout: 50m
-                        when:
-                          stageStatus: Success
-                          condition: <+stage.variables.tf_action> == "destroy"
-                        failureStrategies:
-                          - onFailure:
-                              errors:
-                                - AllErrors
-                              action:
-                                type: Retry
+                    - parallel:
+                        - step:
+                            type: TerraformApply
+                            name: TF Apply
+                            identifier: TF_Apply
+                            spec:
+                              configuration:
+                                type: InheritFromPlan
+                              provisionerIdentifier: <+stage.variables.tf_workspace>
+                            timeout: 1h
+                            when:
+                              stageStatus: Success
+                              condition: <+stage.variables.tf_action> == "apply"
+                            failureStrategies: []
+                        - step:
+                            type: TerraformDestroy
+                            name: TF Destroy
+                            identifier: TF_D
+                            spec:
+                              provisionerIdentifier: <+stage.variables.tf_workspace>
+                              configuration:
+                                type: Inline
                                 spec:
-                                  retryCount: 1
-                                  onRetryFailure:
-                                    action:
-                                      type: ManualIntervention
+                                  workspace: <+stage.variables.tf_workspace>
+                                  configFiles:
+                                    store:
                                       spec:
-                                        timeout: 30m
-                                        onTimeout:
-                                          action:
-                                            type: Abort
-                                  retryIntervals:
-                                    - 1m
+                                        connectorRef: ${git_connector_ref}
+                                        gitFetchType: Branch
+                                        branch: <+stage.variables.tf_branch>
+                                        folderPath: <+stage.variables.tf_folder>
+                                      type: Github
+                                    moduleSource:
+                                      useConnectorCredentials: true
+                                  backendConfig:
+                                    type: Inline
+                                    spec:
+                                      content: |-
+                                        bucket = "<+stage.variables.tf_backend_bucket>"
+                                        prefix = "<+stage.variables.tf_backend_prefix>"
+                                  environmentVariables:
+                                    - name: HARNESS_ACCOUNT_ID
+                                      value: <+stage.variables.harness_account_id>
+                                      type: String
+                                    - name: HARNESS_PLATFORM_API_KEY
+                                      value: <+stage.variables.harness_api_key>
+                                      type: String
+                                    - name: HARNESS_ENDPOINT
+                                      value: <+stage.variables.harness_endpoint>
+                                      type: String
+                                    - name: GOOGLE_BACKEND_CREDENTIALS
+                                      value: <+stage.variables.tf_gcp_keys>
+                                      type: String
+                                    - name: GITHUB_TOKEN
+                                      value: <+stage.variables.github_token>
+                                      type: String
+                                  varFiles:
+                                    - varFile:
+                                        type: Remote
+                                        identifier: tf_remote_seed_lab
+                                        spec:
+                                          store:
+                                            type: Github
+                                            spec:
+                                              gitFetchType: Branch
+                                              repoName: ""
+                                              branch: <+stage.variables.tf_branch>
+                                              paths:
+                                                - tfvars/<+stage.variables.tf_workspace>/account.tfvars
+                                                - tfvars/<+stage.variables.tf_workspace>/connectors.tfvars
+                                                - tfvars/<+stage.variables.tf_workspace>/delegates.tfvars
+                                                - tfvars/<+stage.variables.tf_workspace>/pipelines.tfvars
+                                              connectorRef: ${git_connector_ref}
+                                    - varFile:
+                                        identifier: vars
+                                        spec:
+                                          content: harness_platform_api_key = "<+stage.variables.harness_api_key>"
+                                        type: Inline
+                            timeout: 50m
+                            when:
+                              stageStatus: Success
+                              condition: <+stage.variables.tf_action> == "destroy"
+                            failureStrategies:
+                              - onFailure:
+                                  errors:
+                                    - AllErrors
+                                  action:
+                                    type: Retry
+                                    spec:
+                                      retryCount: 1
+                                      onRetryFailure:
+                                        action:
+                                          type: ManualIntervention
+                                          spec:
+                                            timeout: 30m
+                                            onTimeout:
+                                              action:
+                                                type: Abort
+                                      retryIntervals:
+                                        - 1m
                     - step:
                         type: TerraformRollback
                         name: TF Rollback
@@ -552,6 +613,10 @@ pipeline:
             type: String
             description: ""
             value: https://app.harness.io/gateway
+          - name: github_token
+            type: Secret
+            description: ""
+            value: account.crizstian_github_token
   properties:
     ci:
       codebase:

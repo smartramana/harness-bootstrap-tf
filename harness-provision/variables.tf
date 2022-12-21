@@ -55,6 +55,9 @@ variable "organization_prefix" {
   type    = string
   default = ""
 }
+variable "github_details" {
+  default = {}
+}
 variable "remote_state" {
   # type    = map(any)
   default = {

@@ -1,13 +1,12 @@
 # common vars
 locals {
-  delegate_init_service = length(var.harness_platform_delegates) > 0 ? {
-    enable     = local.enable_seed_pipeline
-    org_id     = local.common_schema.org_id
-    project_id = local.common_schema.project_id
-    } : {
-    enable     = false
-    org_id     = ""
-    project_id = ""
+
+  delegate_count = [for type, delegates in var.harness_platform_delegates : { for key, value in delegates : key => value if value.enable && type == "k8s" }]
+
+  delegate_init_service = {
+    enable     = length(local.delegate_count) > 0
+    org_id     = try(local.common_schema.org_id, "")
+    project_id = try(local.common_schema.project_id, "")
   }
 
   delegate_account_ref = var.remote_state.enable ? element(keys(local.remote_state.delegates.account), 0) : ""

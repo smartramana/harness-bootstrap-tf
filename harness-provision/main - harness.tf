@@ -64,7 +64,6 @@ module "bootstrap_harness_templates" {
   suffix                     = random_string.suffix.id
   tags                       = local.common_tags.tags
   harness_platform_templates = local.templates
-  # org_id                     = local.common_schema.org_id
 }
 
 # # Creates Pipelines

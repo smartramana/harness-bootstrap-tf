@@ -4,7 +4,7 @@ locals {
   seed_pipeline_definition = try(var.harness_platform_pipelines[local.seed_name], {})
   pipeline_seed_name       = "${local.seed_name}_${var.organization_prefix}"
   enable_seed_pipeline     = var.harness_platform_organizations[var.organization_prefix].enable && length(local.seed_pipeline_definition) > 0
-  seed_pipeline_structure = {
+  seed_pipeline = can(var.harness_platform_pipelines[local.seed_name]) ? {
     "${local.pipeline_seed_name}" = {
       pipeline = merge(
         local.seed_pipeline_definition.components.pipeline,
@@ -33,8 +33,7 @@ locals {
       inputset = { for input, details in try(local.seed_pipeline_definition.components.inputset, {}) : input => details if details.enable }
       trigger  = { for t, details in try(local.seed_pipeline_definition.components.trigger, {}) : t => details if details.enable }
     }
-  }
-  seed_pipeline = local.enable_seed_pipeline ? local.seed_pipeline_structure : {}
+  } : {}
 }
 
 # org pipelines

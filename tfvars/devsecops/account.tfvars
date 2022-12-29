@@ -2,12 +2,12 @@ harness_platform_account_id = "Io9SR1H7TtGBq9LVyJVB2w"
 organization_prefix         = "cristian_lab_devsecops_org"
 
 remote_state = {
-  enable    = false
+  enable    = true
   backend   = "gcs"
-  workspace = ""
+  workspace = "shared_services"
   config = {
-    bucket = "crizstian_terraform"
-    prefix = ""
+    bucket = "crizstian-terraform"
+    prefix = "cristian_lab_devsecops_org"
   }
 }
 

@@ -21,9 +21,9 @@ locals {
               git_repo_ref      = var.harness_platform_organizations[var.organization_prefix].git_repo
               tf_backend_prefix = var.organization_prefix
             },
-            [for stage, details in try(local.seed_pipeline_definition.components.pipeline.stages, {}) :
+            [for template_ref, details in try(local.seed_pipeline_definition.components.pipeline.stages, {}) :
               {
-                template_id      = try(module.bootstrap_harness_templates.templates[details.reference].identifier, "")
+                template_id      = try(module.bootstrap_harness_templates.templates[template_ref].identifier, try(local.templates_account_ref[template_ref].identifier, ""))
                 template_version = try(details.version, "")
               } if try(details.template_stage, false)
             ]...
@@ -53,10 +53,10 @@ locals {
             k8s_connector_ref = local.k8s_connector_ref
             delegate_ref      = local.delegate_ref
           },
-          [for stage, details in try(values.components.pipeline.stages, {}) :
+          [for template_ref, details in try(values.components.pipeline.stages, {}) :
             {
-              template_id      = try(module.bootstrap_harness_templates.templates[stage].identifier, "")
-              template_version = details.version
+              template_id      = try(module.bootstrap_harness_templates.templates[template_ref].identifier, try(local.templates_account_ref[template_ref].identifier, ""))
+              template_version = try(details.version, "")
             } if try(details.template_stage, false)
           ]...
         )

@@ -26,15 +26,3 @@ inputSet:
                 - name: docker_connector_ref
                   type: String
                   value: ${docker_connector_ref}
-                - name: tf_folder
-                  type: String
-                  value: ${tf_folder}
-                - name: tf_backend_bucket
-                  type: String
-                  value: ${tf_backend_bucket}
-                - name: tf_backend_prefix
-                  type: String
-                  value: ${tf_backend_prefix}
-                - name: tf_workspace
-                  type: String
-                  value: ${tf_workspace}

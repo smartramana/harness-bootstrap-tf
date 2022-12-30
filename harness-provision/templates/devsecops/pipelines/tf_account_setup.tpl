@@ -20,18 +20,6 @@ pipeline:
               - name: docker_connector_ref
                 type: String
                 value: <+input>
-              - name: tf_folder
-                type: String
-                value: <+input>
-              - name: tf_backend_bucket
-                type: String
-                value: <+input>
-              - name: tf_backend_prefix
-                type: String
-                value: <+input>
-              - name: tf_workspace
-                type: String
-                value: <+input>
     - stage:
         name: Terraform Provisioning
         identifier: Provisioning

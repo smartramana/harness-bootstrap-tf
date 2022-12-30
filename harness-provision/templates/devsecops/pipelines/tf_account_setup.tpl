@@ -5,7 +5,6 @@ pipeline:
   orgIdentifier: ${org_id}
   tags: {}
   stages:
-  %{ if template_id != "" }
     - stage:
         name: Terraform STO
         identifier: Terraform_STO
@@ -33,10 +32,6 @@ pipeline:
               - name: tf_workspace
                 type: String
                 value: <+input>
-              - name: harness_api_key
-                type: String
-                value: <+input>
-    %{ endif }
     - stage:
         name: Terraform Provisioning
         identifier: Provisioning

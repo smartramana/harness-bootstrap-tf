@@ -51,9 +51,6 @@ trigger:
                   - name: tf_workspace
                     type: String
                     value: ${tf_workspace}
-                  - name: harness_api_key
-                    type: String
-                    value: ${harness_api_key}
         - stage:
             identifier: Provisioning
             type: Custom

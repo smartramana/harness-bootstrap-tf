@@ -42,10 +42,6 @@ variable "harness_platform_templates" {
   type    = map(any)
   default = {}
 }
-variable "harness_platform_policies" {
-  type    = map(any)
-  default = {}
-}
 variable "harness_opa_policies" {
   #type    = map(any)
   default = {}

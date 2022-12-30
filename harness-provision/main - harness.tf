@@ -51,7 +51,7 @@ module "bootstrap_harness_policies" {
 
   suffix                    = random_string.suffix.id
   tags                      = local.common_tags.tags
-  harness_platform_policies = local.harness_policies
+  harness_platform_policies = local.policies
 }
 
 # Creates Pipeline Templates

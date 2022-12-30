@@ -313,7 +313,7 @@ template:
 
                   terraform workspace select <+stage.variables.tf_workspace> || terraform workspace new <+stage.variables.tf_workspace>
 
-                  TF_VAR_harness_platform_api_key=<+stage.variables.harness_api_key> terraform plan \
+                  TF_VAR_harness_platform_api_key=<+secrets.getValue("account.cristian_harness_platform_api_key")> terraform plan \
                       -var-file=../tfvars/<+stage.variables.tf_workspace>/account.tfvars \
                       -var-file=../tfvars/<+stage.variables.tf_workspace>/connectors.tfvars \
                       -var-file=../tfvars/<+stage.variables.tf_workspace>/delegates.tfvars \
@@ -322,7 +322,7 @@ template:
 
                   terraform validate
                 envVariables:
-                  GOOGLE_BACKEND_CREDENTIALS: <+secrets.getValue("account.cristian_harness_platform_api_key")>
+                  GOOGLE_BACKEND_CREDENTIALS: <+secrets.getValue("account.Cristian_GOOGLE_BACKEND_CREDENTIALS")>
       sharedPaths:
         - /var/run
         - /shared/customer_artifacts
@@ -350,10 +350,6 @@ template:
         description: ""
         value: <+input>
       - name: tf_workspace
-        type: String
-        description: ""
-        value: <+input>
-      - name: harness_api_key
         type: String
         description: ""
         value: <+input>

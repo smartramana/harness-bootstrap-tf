@@ -2,6 +2,7 @@ trigger:
   name: ${name}
   identifier: ${identifier}
   enabled: ${enabled}
+  encryptedWebhookSecretIdentifier: ""
   description: ${description}
   tags: {}
   orgIdentifier: ${org_id}
@@ -26,6 +27,18 @@ trigger:
     pipeline:
       identifier: ${pipeline_id}
       stages:
+        - stage:
+            identifier: Terraform_STO
+            template:
+              templateInputs:
+                type: CI
+                variables:
+                  - name: k8s_connector_ref
+                    type: String
+                    value: ${k8s_connector_ref}
+                  - name: docker_connector_ref
+                    type: String
+                    value: ${docker_connector_ref}
         - stage:
             identifier: Provisioning
             type: Custom
@@ -52,6 +65,6 @@ trigger:
         ci:
           codebase:
             build:
-              type: PR
+              type: branch
               spec:
-                number: <+trigger.prNumber>
+                branch: <+trigger.sourceBranch>

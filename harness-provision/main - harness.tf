@@ -1,6 +1,6 @@
 # Create Organizations
 module "bootstrap_harness_account" {
-  source                         = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-project?ref=main"
+  source                         = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-project?ref=edge"
   suffix                         = random_string.suffix.id
   tags                           = local.common_tags.tags
   harness_platform_organizations = var.harness_platform_organizations
@@ -13,7 +13,7 @@ module "bootstrap_harness_delegates" {
   depends_on = [
     module.bootstrap_harness_account
   ]
-  source = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-delegate?ref=main"
+  source = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-delegate?ref=edge"
 
   suffix                = random_string.suffix.id
   tags                  = local.common_tags.tags
@@ -30,7 +30,7 @@ module "bootstrap_harness_connectors" {
   depends_on = [
     module.bootstrap_harness_account
   ]
-  source = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-connectors?ref=main"
+  source = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-connector?ref=edge"
 
   suffix                             = random_string.suffix.id
   tags                               = local.common_tags.tags
@@ -47,23 +47,33 @@ module "bootstrap_harness_policies" {
   depends_on = [
     module.bootstrap_harness_account
   ]
-  source = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-raw?ref=main"
+  source = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-raw?ref=edge"
 
   harness_platform_api_key = var.harness_platform_api_key
   harness_raw_request      = {}
 }
 
 # Creates Pipeline Templates
-# TODO: Add Module
-# ---
+module "bootstrap_harness_templates" {
+  depends_on = [
+    module.bootstrap_harness_account,
+    module.bootstrap_harness_delegates
+  ]
+  source = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-template?ref=edge"
+
+  suffix                     = random_string.suffix.id
+  tags                       = local.common_tags.tags
+  harness_platform_templates = local.templates
+}
 
 # # Creates Pipelines
 module "bootstrap_harness_pipelines" {
   depends_on = [
     module.bootstrap_harness_account,
-    module.bootstrap_harness_delegates
+    module.bootstrap_harness_delegates,
+    module.bootstrap_harness_templates
   ]
-  source = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-pipeline?ref=main"
+  source = "git::https://github.com/crizstian/harness-terraform-modules.git//harness-pipeline?ref=edge"
 
   suffix                     = random_string.suffix.id
   tags                       = local.common_tags.tags

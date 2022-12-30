@@ -323,6 +323,10 @@ template:
                   terraform validate
                 envVariables:
                   GOOGLE_BACKEND_CREDENTIALS: <+secrets.getValue("account.Cristian_GOOGLE_BACKEND_CREDENTIALS")>
+                  HARNESS_PLATFORM_API_KEY: <+secrets.getValue("account.cristian_harness_platform_api_key")>
+                  GITHUB_TOKEN: <+secrets.getValue("account.crizstian_github_token")>
+                  HARNESS_ENDPOINT: "https://app.harness.io/gateway"
+                  HARNESS_ACCOUNT_ID: Io9SR1H7TtGBq9LVyJVB2w
       sharedPaths:
         - /var/run
         - /shared/customer_artifacts

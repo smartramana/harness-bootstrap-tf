@@ -37,7 +37,7 @@ locals {
             details.vars,
             {
               k8s_connector_ref    = local.k8s_connector_ref
-              docker_connector_ref = try(module.bootstrap_harness_connectors.connectors.docker_connectors[details.vars.docker_connector].identifier, "")
+              docker_connector_ref = try(module.bootstrap_harness_connectors.connectors.docker_connectors[details.vars.docker_connector].identifier, local.docker_account_ref)
               tf_backend_prefix    = var.organization_prefix
             }
         ) }

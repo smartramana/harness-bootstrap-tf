@@ -30,8 +30,20 @@ locals {
           )
         }
       )
-      inputset = { for input, details in try(local.seed_pipeline_definition.components.inputset, {}) : input => details if details.enable }
-      trigger  = { for t, details in try(local.seed_pipeline_definition.components.trigger, {}) : t => details if details.enable }
+      inputset = { for input, details in try(local.seed_pipeline_definition.components.inputset, {}) : input => merge(
+        details,
+        {
+          vars = merge(
+            details.vars,
+            {
+              k8s_connector_ref    = local.k8s_connector_ref
+              docker_connector_ref = try(module.bootstrap_harness_connectors.connectors.docker_connectors[details.vars.docker_connector].identifier, "")
+              tf_backend_prefix    = var.organization_prefix
+            }
+        ) }
+
+      ) if details.enable }
+      trigger = { for t, details in try(local.seed_pipeline_definition.components.trigger, {}) : t => details if details.enable }
     }
   } : {}
 }

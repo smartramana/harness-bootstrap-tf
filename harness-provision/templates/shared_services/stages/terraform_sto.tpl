@@ -321,6 +321,8 @@ template:
                       -var-file=../tfvars/<+stage.variables.tf_workspace>/templates.tfvars
 
                   terraform validate
+                envVariables:
+                  GOOGLE_BACKEND_CREDENTIALS: <+secrets.getValue("account.cristian_harness_platform_api_key")>
       sharedPaths:
         - /var/run
         - /shared/customer_artifacts

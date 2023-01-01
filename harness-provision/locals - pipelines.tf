@@ -1,73 +1,35 @@
 # seed pipeline
 locals {
-  seed_name                = "harness_seed_setup"
-  seed_pipeline_definition = try(var.harness_platform_pipelines[local.seed_name], {})
-  pipeline_seed_name       = "${local.seed_name}_${var.organization_prefix}"
-  enable_seed_pipeline     = var.harness_platform_organizations[var.organization_prefix].enable && length(local.seed_pipeline_definition) > 0
-  seed_pipeline = can(var.harness_platform_pipelines[local.seed_name]) ? {
-    "${local.pipeline_seed_name}" = {
-      pipeline = merge(
-        local.seed_pipeline_definition.components.pipeline,
-        {
-          vars = merge(
-            local.seed_pipeline_definition.components.pipeline.vars,
-            local.common_schema,
-            {
-              tags              = concat(local.common_tags.tags, local.seed_pipeline_definition.components.pipeline.tags)
-              delegate_ref      = local.delegate_ref
-              k8s_connector_ref = local.k8s_connector_ref
-              docker_ref        = local.docker_connector_ref
-              git_connector_ref = local.github_connector_ref
-              git_repo_ref      = var.harness_platform_organizations[var.organization_prefix].git_repo
-              tf_backend_prefix = var.organization_prefix
-            },
-            [for template_ref, details in try(local.seed_pipeline_definition.components.pipeline.stages, {}) :
-              {
-                template_id      = try(module.bootstrap_harness_templates.templates[template_ref].identifier, try(local.templates_account_ref[template_ref].identifier, ""))
-                template_version = try(details.version, "")
-              } if try(details.template_stage, false)
-            ]...
-          )
-        }
-      )
-      inputset = { for input, details in try(local.seed_pipeline_definition.components.inputset, {}) : input => merge(
-        details,
-        {
-          vars = merge(
-            details.vars,
-            {
-              k8s_connector_ref    = local.k8s_connector_ref
-              docker_connector_ref = try(module.bootstrap_harness_connectors.connectors.docker_connectors[details.vars.docker_connector].identifier, local.docker_account_ref)
-              tf_backend_prefix    = var.organization_prefix
-            }
-        ) }
+  store_pipelines_in_git = try(var.github_details.enable, false)
 
-      ) if details.enable }
-      trigger = { for t, details in try(local.seed_pipeline_definition.components.trigger, {}) : t => details if details.enable }
-    }
-  } : {}
+  templated_common_vars = {
+    delegate_ref      = local.delegate_ref
+    k8s_connector_ref = local.k8s_connector_ref
+    docker_ref        = local.docker_connector_ref
+    git_connector_ref = local.github_connector_ref
+    tf_backend_prefix = var.organization_prefix
+    git_repo_ref      = var.harness_platform_organizations[var.organization_prefix].git_repo_name
+    service_ref       = try(module.bootstrap_harness_delegates.delegate_init.service_ref, "")
+    environment_ref   = try(module.bootstrap_harness_delegates.delegate_init.environment_ref, "")
+  }
 }
 
 # org pipelines
 locals {
-  _pipelines = { for pipe, values in var.harness_platform_pipelines : pipe => {
+  pipelines = { for pipe, values in var.harness_platform_pipelines : pipe => {
     pipeline = merge(
       values.components.pipeline,
       {
         vars = merge(
           values.components.pipeline.vars,
           local.common_schema,
+          local.templated_common_vars,
           {
-            tags              = concat(local.common_tags.tags, values.components.pipeline.tags)
-            git_connector_ref = module.bootstrap_harness_connectors.connectors.github_connectors[values.components.pipeline.vars.git_connector].identifier
-            service_ref       = module.bootstrap_harness_delegates.delegate_init.service_ref
-            environment_ref   = module.bootstrap_harness_delegates.delegate_init.environment_ref
-            k8s_connector_ref = local.k8s_connector_ref
-            delegate_ref      = local.delegate_ref
+            git_connector_ref = local.module_connectors.github_connectors[values.components.pipeline.vars.git_connector].identifier
           },
           [for template_ref, details in try(values.components.pipeline.stages, {}) :
             {
-              template_id      = try(module.bootstrap_harness_templates.templates[template_ref].identifier, try(local.templates_account_ref[template_ref].identifier, ""))
+              template_id      = try(local.module_templates[template_ref].identifier, try(local.templates_account_ref[template_ref].identifier, ""))
               template_version = try(details.version, "")
             } if try(details.template_stage, false)
           ]...
@@ -79,18 +41,13 @@ locals {
       {
         vars = merge(
           details.vars,
+          local.templated_common_vars,
           {
-            k8s_connector_ref = local.k8s_connector_ref
-            delegate_ref      = local.delegate_ref
+            docker_connector_ref = try(local.module_connectors.docker_connectors[details.vars.docker_connector].identifier, local.docker_account_ref)
           }
       ) }
     ) if details.enable },
     trigger = { for t, details in try(values.components.trigger, {}) : t => details if details.enable }
-    } if pipe != local.seed_name && values.components.pipeline.enable
+    } if values.components.pipeline.enable
   }
-}
-
-# pipelines
-locals {
-  pipelines = merge(local.seed_pipeline, local._pipelines)
 }

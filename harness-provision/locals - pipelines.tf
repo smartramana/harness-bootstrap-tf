@@ -20,7 +20,10 @@ locals {
     pipeline = merge(
       values.components.pipeline,
       {
-        vars = merge(
+        vars = try(values.components.pipeline.foreign_pipeline, false) ? merge(
+          local.remote_state.pipelines[pipe].vars,
+          { remote_id = local.remote_state.pipelines[pipe].pipeline_id }
+          ) : merge(
           values.components.pipeline.vars,
           local.common_schema,
           local.templated_common_vars,

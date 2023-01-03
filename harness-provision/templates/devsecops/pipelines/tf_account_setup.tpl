@@ -91,6 +91,7 @@ pipeline:
                                           - tfvars/<+stage.variables.tf_workspace>/delegates.tfvars
                                           - tfvars/<+stage.variables.tf_workspace>/pipelines.tfvars
                                           - tfvars/<+stage.variables.tf_workspace>/templates.tfvars
+                                          - tfvars/<+stage.variables.tf_workspace>/policies.tfvars
                                         connectorRef: ${git_connector_ref}
                               - varFile:
                                   identifier: vars
@@ -227,6 +228,7 @@ pipeline:
                                                 - tfvars/<+stage.variables.tf_workspace>/delegates.tfvars
                                                 - tfvars/<+stage.variables.tf_workspace>/pipelines.tfvars
                                                 - tfvars/<+stage.variables.tf_workspace>/templates.tfvars
+                                                - tfvars/<+stage.variables.tf_workspace>/policies.tfvars
                                               connectorRef: ${git_connector_ref}
                                     - varFile:
                                         identifier: vars

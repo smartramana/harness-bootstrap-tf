@@ -9,8 +9,3 @@ output "harness" {
     length(keys(module.bootstrap_harness_policies.policies)) > 0 ? { policies = module.bootstrap_harness_policies.policies } : {},
   )
 }
-
-
-# output "policies" {
-#   value = { for key, value in local.policies : key => { identifier = lookup(jsondecode(value.content), "identifier", "null") } }
-# }

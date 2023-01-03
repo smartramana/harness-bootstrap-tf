@@ -10,7 +10,7 @@ locals {
     ]
   }
   common_schema = {
-    org_id     = try(module.bootstrap_harness_account.organization[var.organization_prefix].org_id, "default")
+    org_id     = terraform.workspace != "shared_services" ? try(module.bootstrap_harness_account.organization[var.organization_prefix].org_id, "default") : ""
     project_id = try(module.bootstrap_harness_account.organization[var.organization_prefix].seed_project_id, "")
     suffix     = try(module.bootstrap_harness_account.organization[var.organization_prefix].suffix, random_string.suffix.id)
   }

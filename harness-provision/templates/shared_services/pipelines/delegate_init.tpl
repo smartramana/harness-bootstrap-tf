@@ -230,7 +230,7 @@ pipeline:
           - name: TF_VERSION
             type: String
             description: ""
-            value: 1.3.5
+            value: <+input>
           - name: k8s_connector_ref
             type: String
             description: ""

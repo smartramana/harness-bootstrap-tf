@@ -21,6 +21,7 @@ harness_platform_pipelines = {
             enable_terraform = true
             enable_gcloud    = false
             os_linux_distro  = "centos"
+            TF_VERSION       = "1.3.5"
           }
         }
       }

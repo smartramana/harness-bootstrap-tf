@@ -20,6 +20,9 @@ inputSet:
             - name: enable_terraform
               type: String
               value: "${enable_terraform}"
+            - name: TF_VERSION
+              type: String
+              value: "${TF_VERSION}"
             - name: enable_gcloud
               type: String
               value: "${enable_gcloud}"

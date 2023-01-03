@@ -13,7 +13,8 @@ harness_platform_pipelines = {
           }
         }
         vars = {
-          approver_ref = "account.SE_Admin"
+          approver_ref  = "account.SE_Admin"
+          git_connector = "devsecops"
         }
       }
       inputset = {

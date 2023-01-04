@@ -36,6 +36,7 @@ module "bootstrap_harness_connectors" {
   tags                               = local.common_tags.tags
   delegate_selectors                 = local.delegate_selectors
   harness_platform_github_connectors = local.github_connectors
+  org_id                             = local.common_schema.org_id
 
   harness_platform_docker_connectors = var.harness_platform_docker_connectors
   harness_platform_aws_connectors    = var.harness_platform_aws_connectors
@@ -51,6 +52,7 @@ module "bootstrap_harness_policies" {
 
   suffix                    = random_string.suffix.id
   tags                      = local.common_tags.tags
+  org_id                    = local.common_schema.org_id
   harness_platform_policies = local.policies
 }
 
@@ -64,6 +66,7 @@ module "bootstrap_harness_templates" {
 
   suffix                     = random_string.suffix.id
   tags                       = local.common_tags.tags
+  org_id                     = local.common_schema.org_id
   harness_platform_templates = local.templates
 }
 

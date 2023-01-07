@@ -28,7 +28,7 @@ locals {
           local.common_schema,
           local.templated_common_vars,
           {
-            git_connector_ref = local.module_connectors.github_connectors[values.components.pipeline.vars.git_connector].identifier
+            git_connector_ref = try(local.module_connectors.github_connectors[values.components.pipeline.vars.git_connector].identifier, local.github_connector_ref)
           },
           [for template_ref, details in try(values.components.pipeline.stages, {}) :
             {

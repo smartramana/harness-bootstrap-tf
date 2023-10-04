@@ -1,9 +1,9 @@
 inputSet:
-  identifier: "tf_base"
-  name: "tf_base"
+  identifier: "input"
+  name: "harness-bootstrap-input"
   tags: {}
-  orgIdentifier: "cristian_lab_devsecops_org_ifJl"
-  projectIdentifier: "cristian_lab_devsecops_org_ifJl"
+  orgIdentifier: "default"
+  projectIdentifier: "Azure"
   pipeline:
     identifier: "TF_Account_Setup"
     stages:

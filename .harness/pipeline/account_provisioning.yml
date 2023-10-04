@@ -1,6 +1,6 @@
 pipeline:
-  name: TF Account Setup
-  identifier: TF_Account_Setup
+  name: harness-bootstrap-tf
+  identifier: harness-bootstrap-tf
   projectIdentifier: Azure
   orgIdentifier: default
   tags: {}

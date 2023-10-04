@@ -1,8 +1,8 @@
 pipeline:
   name: TF Account Setup
   identifier: TF_Account_Setup
-  projectIdentifier: cristian_lab_devsecops_org_ifJl
-  orgIdentifier: cristian_lab_devsecops_org_ifJl
+  projectIdentifier: Azure
+  orgIdentifier: default
   tags: {}
   stages:
     - stage:

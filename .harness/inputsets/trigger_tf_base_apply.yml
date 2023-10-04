@@ -1,10 +1,10 @@
 inputSet:
-  identifier: triggertfbaseapply
+  identifier: trigger_tf_base_apply
   name: trigger_tf_base_apply
   orgIdentifier: default
   projectIdentifier: Azure
   pipeline:
-    identifier: TFAccountSetup
+    identifier: harnessbootstraptf
     stages:
     - stage:
         identifier: "Provisioning"

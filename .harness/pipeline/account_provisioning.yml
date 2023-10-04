@@ -1,6 +1,6 @@
 pipeline:
   name: harness-bootstrap-tf
-  identifier: harness-bootstrap-tf
+  identifier: harnessbootstraptf
   projectIdentifier: Azure
   orgIdentifier: default
   tags: {}

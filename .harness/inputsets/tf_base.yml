@@ -1,11 +1,11 @@
 inputSet:
-  identifier: "input"
+  identifier: "harness-bootstrap-input"
   name: "harness-bootstrap-input"
   tags: {}
   orgIdentifier: "default"
   projectIdentifier: "Azure"
   pipeline:
-    identifier: "TF_Account_Setup"
+    identifier: "harness-bootstrap-input"
     stages:
     - stage:
         identifier: "Provisioning"

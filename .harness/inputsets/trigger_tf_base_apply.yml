@@ -1,10 +1,10 @@
 inputSet:
-  identifier: "trigger_tf_base_apply"
-  name: "trigger_tf_base_apply"
-  orgIdentifier: "cristian_lab_devsecops_org_ifJl"
-  projectIdentifier: "cristian_lab_devsecops_org_ifJl"
+  identifier: triggertfbaseapply
+  name: trigger_tf_base_apply
+  orgIdentifier: default
+  projectIdentifier: Azure
   pipeline:
-    identifier: "TF_Account_Setup"
+    identifier: TFAccountSetup
     stages:
     - stage:
         identifier: "Provisioning"
